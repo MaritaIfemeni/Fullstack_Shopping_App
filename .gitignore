@@ -8,6 +8,7 @@ backend/bin/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+.vscode/
 
 # .NET
 project.lock.json
@@ -15,6 +16,8 @@ project.fragment.lock.json
 artifacts/
 
 # Files built by Visual Studio
+**/obj/
+**/bin/
 *_i.c
 *_p.c
 *_h.h
