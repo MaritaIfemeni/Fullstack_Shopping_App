@@ -1,6 +1,8 @@
 # Fullstack Project 
 
-## Marita's Project
+### Marita's Project
+
+- Link to the project desing board: **[here]( https://miro.com/app/board/uXjVMxMsI9Y=/?share_link_id=849947316130)**
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
 ![SASS](https://img.shields.io/badge/SASS-v.4-hotpink)
