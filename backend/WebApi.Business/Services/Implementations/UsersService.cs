@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Business.Services.Abstractions
+namespace WebApi.Business.Services.Implementations
 {
-    public interface IUserService
+    public class UsersService
     {
         
     }

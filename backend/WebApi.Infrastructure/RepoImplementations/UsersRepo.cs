@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Business.RepoAbstractions
+namespace WebApi.Infrastructure.RepoImplementations
 {
-    public interface IUserRepo
+    public class UsersRepo
     {
         
     }

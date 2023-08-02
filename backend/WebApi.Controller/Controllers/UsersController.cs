@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Business.Services.Implementations
+namespace WebApi.Controller.Controllers
 {
-    public class UserService
+    public class UsersController
     {
         
     }
