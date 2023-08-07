@@ -1,6 +1,6 @@
 namespace WebApi.Domain.src.Entities
 {
-    public class User : BaseEntity
+        public class User : BaseEntity
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
@@ -11,6 +11,7 @@ namespace WebApi.Domain.src.Entities
         public string City { get; set; } = string.Empty;
         public string Postcode { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
         public UserRole UserRole { get; set; }
     }
 

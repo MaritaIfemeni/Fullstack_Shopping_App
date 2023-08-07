@@ -3,8 +3,8 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Business.src.Services.ServiceInterfaces
 {
-    public interface IUsersService : IBaseService<User, UserDto>
+    public interface IProductService : IBaseService<Product, ProductDto>
     {
-        UserDto UpadatePassword(string id, string password);
+        
     }
 }
