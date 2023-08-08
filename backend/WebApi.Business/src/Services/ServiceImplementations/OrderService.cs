@@ -15,27 +15,5 @@ namespace WebApi.Business.src.Services.ServiceImplementations
         {
             _orderRepo = orderRepo;
         }
-
-        // these methods are for admin user, authorization will be implemented later
-        public OrderDto UpdateOrderStatus(string id, string newStatus)
-        {
-            var foundOrder = _orderRepo.GetOneById(id);
-            if (foundOrder is null)
-            {
-                throw new Exception("Not Found"); // change this to a custom exception
-            }
-            return _mapper.Map<OrderDto>(_orderRepo.UpdateOrderStatus(foundOrder, newStatus));
-        }
-
-        public OrderDto GetOrderStatus(string id)
-        {
-            var foundOrder = _orderRepo.GetOneById(id);
-            if (foundOrder is null)
-            {
-                throw new Exception("Not Found"); // change this to a custom exception
-            }
-            return _mapper.Map<OrderDto>(_orderRepo.GetOrderStatus(foundOrder));
-        }
     }
-
 }
