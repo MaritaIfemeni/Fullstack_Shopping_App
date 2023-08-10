@@ -3,8 +3,8 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Business.src.Services.ServiceInterfaces
 {
-    public interface IUserService : IBaseService<User, UserDto>
+    public interface IUserService : IBaseService<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
-        UserDto UpadatePassword(string id, string password);
+        Task<UserReadDto> UpdatePassword(string id, string newPassword);
     }
 }

@@ -3,8 +3,8 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Business.src.Services.ServiceInterfaces
 {
-    public interface IOrderService : IBaseService<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
+    public interface IOrderDetailService : IBaseService<OrderDetail, OrderDetailReadDto, OrderDetailCreateDto, OrderDetailUpdateDto>
     {
-        
+
     }
 }

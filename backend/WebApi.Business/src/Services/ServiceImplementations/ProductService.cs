@@ -6,14 +6,12 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Business.src.Services.ServiceImplementations
 {
-    public class ProductService : BaseService<Product, ProductDto>, IProductService
+    public class ProductService : BaseService<Product, ProductReadDto, ProductCreateDto, ProductUpdateDto>, IProductService
     {
-
         private readonly IProductRepo _productRepo;
         public ProductService(IProductRepo productRepo, IMapper mapper) : base(productRepo, mapper)
         {
             _productRepo = productRepo;
         }
-   
     }
 }

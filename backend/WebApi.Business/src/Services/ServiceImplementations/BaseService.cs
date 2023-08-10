@@ -5,7 +5,7 @@ using WebApi.Domain.src.RepoInterfaces;
 
 namespace WebApi.Business.src.Services.ServiceImplementations
 {
-    public class BaseService<T, TDto> : IBaseService<T, TDto>
+    public class BaseService<T, TReadDto, TCreateDto, TUpdateDto> : IBaseService<T, TReadDto, TCreateDto, TUpdateDto>
     {
         private readonly IBaseRepo<T> _baseRepo;
         protected readonly IMapper _mapper;
@@ -15,38 +15,45 @@ namespace WebApi.Business.src.Services.ServiceImplementations
             _baseRepo = baseRepo;
             _mapper = mapper;
         }
-        public bool DeleteOneById(string id)
+
+        public async Task<bool> DeleteOneById(string id)
         {
-            var foundItem = _baseRepo.GetOneById(id);
+            var foundItem = await _baseRepo.GetOneById(id);
             if (foundItem is not null)
             {
-                _baseRepo.DeleteOneById(foundItem);
+                await _baseRepo.DeleteOneById(foundItem);
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<TDto> GetAll(QueryOptions queryOptions)
+        public virtual async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
         {
-            return _mapper.Map<IEnumerable<TDto>>(_baseRepo.GetAll(queryOptions));
+            return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepo.GetAll(queryOptions));
         }
 
-        public TDto GetOneById(string id)
+        public virtual async Task<TReadDto> GetOneById(string id)
         {
-            return _mapper.Map<TDto>(_baseRepo.GetOneById(id));
+            return _mapper.Map<TReadDto>(await _baseRepo.GetOneById(id));
         }
 
-        public TDto UpdateOneById(string id, TDto updated)
+        public virtual async Task<TReadDto> UpdateOneById(string id, TUpdateDto updated)
         {
-            var foundItem = _baseRepo.GetOneById(id);
+            var foundItem = await _baseRepo.GetOneById(id);
             if (foundItem is null)
             {
-                _baseRepo.DeleteOneById(foundItem);
+                await _baseRepo.DeleteOneById(foundItem);
                 throw new Exception("Not Found"); // change this to a custom exception
             }
 
             var updatedEntity = _baseRepo.UpdateOneById(foundItem, _mapper.Map<T>(updated));
-            return _mapper.Map<TDto>(updatedEntity);
+            return _mapper.Map<TReadDto>(updatedEntity);
+        }
+
+        public virtual async Task<TReadDto> CreateOne(TCreateDto newEntity)
+        {
+            var createdEntity = await _baseRepo.CreateOne(_mapper.Map<T>(newEntity));
+            return _mapper.Map<TReadDto>(createdEntity);
         }
     }
 }
