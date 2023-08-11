@@ -16,7 +16,7 @@ namespace WebApi.Business.src.Services.ServiceImplementations
             _mapper = mapper;
         }
 
-        public async Task<bool> DeleteOneById(string id)
+        public async Task<bool> DeleteOneById(Guid id)
         {
             var foundItem = await _baseRepo.GetOneById(id);
             if (foundItem is not null)
@@ -32,12 +32,12 @@ namespace WebApi.Business.src.Services.ServiceImplementations
             return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepo.GetAll(queryOptions));
         }
 
-        public virtual async Task<TReadDto> GetOneById(string id)
+        public virtual async Task<TReadDto> GetOneById(Guid id)
         {
             return _mapper.Map<TReadDto>(await _baseRepo.GetOneById(id));
         }
 
-        public virtual async Task<TReadDto> UpdateOneById(string id, TUpdateDto updated)
+        public virtual async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updated)
         {
             var foundItem = await _baseRepo.GetOneById(id);
             if (foundItem is null)

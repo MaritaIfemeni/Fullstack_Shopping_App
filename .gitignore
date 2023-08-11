@@ -3,6 +3,7 @@
 # User-specific files
 **/appsettings.json
 **/appsettings.*.json
+
 backend/obj/
 backend/bin/
 backend/.vscode
@@ -20,6 +21,7 @@ artifacts/
 # Files built by Visual Studio
 **/obj/
 **/bin/
+**/Migrations
 *_i.c
 *_p.c
 *_h.h
