@@ -2,24 +2,24 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Business.src.Dtos
 {
- public class OrderReadDto
+    public class OrderReadDto
     {
-        public UserReadDto UserDto { get; set; }
-        public OrderStatus Status { get; set; }
-        public List<OrderDetailReadDto> OrderDetailReadDto { get; set; }
+        public OrderStatus OrderStatus { get; set; }
+        public UserReadDto User { get; set; }
+        public Guid UserId { get; set; }
+        public List<OrderDetailReadDto> OrderDetails { get; set; }
     }
 
     public class OrderCreateDto
     {
-        public UserReadDto UserDto { get; set; }
-        public OrderStatus Status { get; set; }
-        public List<OrderDetailCreateDto> OrderDetailCreateDto { get; set; }
+        public OrderStatus OrderStatus { get; set; }
+        public UserReadDto User { get; set; }
+        public Guid UserId { get; set; }
+        public List<OrderDetailCreateDto> OrderDetails { get; set; }
     }
 
     public class OrderUpdateDto
     {
-        public UserReadDto UserDto { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderDetailUpdateDto> OrderDetailUpdateDto { get; set; }
     }
 }

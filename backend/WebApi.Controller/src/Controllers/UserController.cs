@@ -15,18 +15,26 @@ namespace WebApi.Controller.src.Controllers
             _userService = baseService;
         }
 
-        [AllowAnonymous]
-        public override async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto dto)
-        {
-            var createdObject = await base.CreateOne(dto);
-            return CreatedAtAction(nameof(CreateOne), createdObject);
-        }
+        // [Authorize(Roles = "Admin")]
+        //     // [HttpPost("admin")]
+        //     public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto)
+        //     {
+        //         return CreatedAtAction(nameof(CreateAdmin), await _userService.GreateAdmin(dto));
+        //     }
+
+
+        //    //[Authorize(Roles = "Admin")]
+        //     public override async Task<ActionResult<IEnumerable<UserReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
+        //     {
+
+        //         return Ok(await _userService.GetAll(queryOptions));
+        //     }
+
 
         [AllowAnonymous]
         public override async Task<ActionResult<UserReadDto>> GetOneById([FromRoute] Guid id)
         {
-            var foundUser = await base.GetOneById(id);
-            return foundUser;
+            return Ok(await _userService.GetOneById(id));
         }
     }
 }

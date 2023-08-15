@@ -24,12 +24,14 @@ namespace WebApi.Business.src.Services.ServiceImplementations
                 await _baseRepo.DeleteOneById(foundItem);
                 return true;
             }
-            return false;
+            return false; ///should it throw an exception instead?
         }
 
         public virtual async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
         {
-            return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepo.GetAll(queryOptions));
+            queryOptions.Search = "";
+            var result = await _baseRepo.GetAll(queryOptions);
+            return _mapper.Map<IEnumerable<TReadDto>>(result);
         }
 
         public virtual async Task<TReadDto> GetOneById(Guid id)
@@ -39,17 +41,19 @@ namespace WebApi.Business.src.Services.ServiceImplementations
 
         public virtual async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updated)
         {
-            var foundItem = await _baseRepo.GetOneById(id);
-            if (foundItem is null)
+            var entity = await _baseRepo.GetOneById(id);
+
+            if (entity == null)
             {
-                await _baseRepo.DeleteOneById(foundItem);
-                throw new Exception("Not Found"); // change this to a custom exception
+                throw new Exception($"Entity with id {id} not found.");
             }
 
-            var updatedEntity = _baseRepo.UpdateOneById(foundItem, _mapper.Map<T>(updated));
+            _mapper.Map(updated, entity);
+
+            var updatedEntity = await _baseRepo.UpdateOneById(entity);
+
             return _mapper.Map<TReadDto>(updatedEntity);
         }
-
         public virtual async Task<TReadDto> CreateOne(TCreateDto newEntity)
         {
             var createdEntity = await _baseRepo.CreateOne(_mapper.Map<T>(newEntity));

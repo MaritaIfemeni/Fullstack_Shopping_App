@@ -6,5 +6,6 @@ namespace WebApi.Business.src.Services.ServiceInterfaces
     public interface IUserService : IBaseService<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
         Task<UserReadDto> UpdatePassword(Guid id, string newPassword);
+        Task<UserReadDto> GreateAdmin(UserCreateDto CreatedDto);
     }
 }

@@ -1,28 +1,35 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Swashbuckle.AspNetCore.Filters;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Business.src.Services.ServiceImplementations;
 using WebApi.Domain.src.RepoInterfaces;
 using WebApi.Infrastructure.src.RepoImplimentations;
 using WebApi.Infrastructure.src.Database;
+using WebApi.Infrastructure.src.AuthorizationRequirement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Add automapper dependency injection
+// Add Automapper DI
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // Add db context
 builder.Services.AddDbContext<DatabaseContext>();
 
-// Add service dependency injection
+// Add service DI
 builder.Services
 .AddScoped<IUserRepo, UserRepo>()
-.AddScoped<IUserService, UserService>();
+.AddScoped<IUserService, UserService>()
+.AddScoped<IAuthService, AuthService>()
+.AddScoped<IProductRepo, ProductRepo>()
+.AddScoped<IProductService, ProductService>()
+.AddScoped<IOrderRepo, OrderRepo>()
+.AddScoped<IOrderService, OrderService>();
 
 // Add services to the container.
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,23 +45,37 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-//Config route options
+// add policy based requirement handler to service
+builder.Services
+.AddSingleton<OwnerOnlyRequirementHandler>();
+
+//Config route
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
 });
 
-//authentication: TODO: !!!This is not a secure way to store the key, need to be stored in a secure place!!!
+//authentication:
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
+   {
+       var configuration = new ConfigurationBuilder()
+           .AddJsonFile("appsettings.json")
+           .Build();
+
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidIssuer = configuration.GetValue<string>("TokenSettings:Issuer"),
+           ValidateAudience = false,
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("TokenSettings:SecurityKey"))),
+           ValidateIssuerSigningKey = true
+       };
+   });
+
+builder.Services.AddAuthorization(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = "prackey-backend",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("prackey-backend-jsdguyfsdgcjsdbchjsdb jdhscjysdcsdj")),
-        ValidateIssuerSigningKey = true
-    };
+    options.AddPolicy("OwnerOnly", policy => policy.Requirements.Add(new OwnerOnlyRequirement()));
 });
 
 var app = builder.Build();
@@ -67,6 +88,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS with the default policy (allow any origin, method, and header)
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication();
 

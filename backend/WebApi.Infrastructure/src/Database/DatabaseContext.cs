@@ -4,10 +4,14 @@ using WebApi.Domain.src.Entities;
 
 namespace WebApi.Infrastructure.src.Database
 {
-    public class DatabaseContext: DbContext
+    public class DatabaseContext : DbContext
     {
         private readonly IConfiguration _config;
         public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public DatabaseContext(DbContextOptions options, IConfiguration config) : base(options)
         {
@@ -22,12 +26,21 @@ namespace WebApi.Infrastructure.src.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new NpgsqlDataSourceBuilder(_config.GetConnectionString("Default"));
+            builder.MapEnum<UserRole>();
+            optionsBuilder.AddInterceptors(new TimeStampInterceptor());
             optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasPostgresEnum<UserRole>();
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<OrderDetail>().HasKey("OrderId", "ProductId"); 
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.ProductImages) 
+                .WithOne()                     
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
