@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Reflection;
+using WebApi.Domain.src.Entities;
 using WebApi.Domain.src.RepoInterfaces;
 using WebApi.Infrastructure.src.Database;
 using WebApi.Domain.src.Shared;
@@ -33,41 +32,60 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
 
         public async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
         {
-            var entities = _dbSet.AsQueryable();
+            var query = _dbSet.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(queryOptions.Search))
+            if (!string.IsNullOrEmpty(queryOptions.Search))
             {
-                entities = entities.Where(entity =>
-                    entity.ToString().Contains(queryOptions.Search, StringComparison.OrdinalIgnoreCase));
-            }
-            if (!string.IsNullOrWhiteSpace(queryOptions.Search))
-            {
-                var parameter = Expression.Parameter(typeof(T), "entity");
-                var property = Expression.Property(parameter, queryOptions.Search);
-                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                var searchValue = Expression.Constant(queryOptions.Search, typeof(string));
-                var containsExpression = Expression.Call(property, containsMethod, searchValue);
-                var lambda = Expression.Lambda<Func<T, bool>>(containsExpression, parameter);
-                entities = entities.Where(lambda);
-            }
-
-            if (!string.IsNullOrWhiteSpace(queryOptions.Order))
-            {
-                var propertyInfo = typeof(T).GetProperty(queryOptions.Order,
-                    BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-
-                if (propertyInfo != null)
+                if (typeof(T) == typeof(Product))
                 {
-                    entities = queryOptions.Descending
-                        ? entities.OrderByDescending(entity => EF.Property<object>(entity, queryOptions.Order))
-                        : entities.OrderBy(entity => EF.Property<object>(entity, queryOptions.Order));
+                    query = query.Where(e => ((Product)(object)e).ProductName.Contains(queryOptions.Search));
+                }
+                else if (typeof(T) == typeof(User))
+                {
+                    query = query.Where(e =>
+                        ((User)(object)e).FirstName.Contains(queryOptions.Search) ||
+                        ((User)(object)e).LastName.Contains(queryOptions.Search)
+                    );
+                }
+                else if (typeof(T) == typeof(Order))
+                {
+                    query = query.Where(e => ((Order)(object)e).OrderStatus.ToString().Contains(queryOptions.Search));
                 }
             }
+            if (queryOptions.Descending)
+            {
+                if (typeof(T) == typeof(Product))
+                {
+                    query = query.OrderByDescending(e => EF.Property<DateTime>((Product)(object)e, queryOptions.Order));
+                }
+                else if (typeof(T) == typeof(User))
+                {
+                    query = query.OrderByDescending(e => EF.Property<DateTime>((User)(object)e, queryOptions.Order));
+                }
+                else if (typeof(T) == typeof(Order))
+                {
+                    query = query.OrderByDescending(e => EF.Property<DateTime>((Order)(object)e, queryOptions.Order));
+                }
+            }
+            else
+            {
+                if (typeof(T) == typeof(Product))
+                {
+                    query = query.OrderBy(e => EF.Property<DateTime>((Product)(object)e, queryOptions.Order));
+                }
+                else if (typeof(T) == typeof(User))
+                {
+                    query = query.OrderBy(e => EF.Property<DateTime>((User)(object)e, queryOptions.Order));
+                }
+                else if (typeof(T) == typeof(Order))
+                {
+                    query = query.OrderBy(e => EF.Property<DateTime>((Order)(object)e, queryOptions.Order));
+                }
+            }
+            query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.PageSize)
+                        .Take(queryOptions.PageSize);
 
-            entities = entities.Skip((queryOptions.PageNumber - 1) * queryOptions.PageSize)
-                .Take(queryOptions.PageSize);
-
-            return await entities.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public virtual async Task<T?> GetOneById(Guid id)
