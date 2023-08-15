@@ -27,6 +27,7 @@ namespace WebApi.Infrastructure.src.Database
         {
             var builder = new NpgsqlDataSourceBuilder(_config.GetConnectionString("Default"));
             builder.MapEnum<UserRole>();
+            builder.MapEnum<OrderStatus>();
             optionsBuilder.AddInterceptors(new TimeStampInterceptor());
             optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
         }
@@ -35,6 +36,7 @@ namespace WebApi.Infrastructure.src.Database
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresEnum<UserRole>();
+            modelBuilder.HasPostgresEnum<OrderStatus>();
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
             modelBuilder.Entity<OrderDetail>().HasKey("OrderId", "ProductId"); 
             modelBuilder.Entity<Product>()

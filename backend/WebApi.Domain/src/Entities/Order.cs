@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace WebApi.Domain.src.Entities
 {
     public class Order : BaseEntity
@@ -7,9 +9,10 @@ namespace WebApi.Domain.src.Entities
         public List<OrderDetail> OrderDetails { get; set; }
     }
     
+     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OrderStatus
     {
-        Processing,
-        Shipped
+        Processing = 1,
+        Shipped = 2
     }
 }

@@ -16,6 +16,5 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
             _products = dbContext.Products;
             _context = dbContext;
         }
-
     }
 }

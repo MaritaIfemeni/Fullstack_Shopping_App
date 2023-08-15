@@ -15,5 +15,12 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
             _context = dbContext;
 
         }
+        
+        public override async Task<Order> CreateOne(Order order)
+        {
+            order.OrderStatus = OrderStatus.Processing;
+            return await base.CreateOne(order);
+            
+        }
     }
 }

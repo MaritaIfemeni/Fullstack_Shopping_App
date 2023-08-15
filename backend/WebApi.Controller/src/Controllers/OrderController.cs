@@ -22,7 +22,6 @@ namespace WebApi.Controller.src.Controllers
 
             var orderCreated = await _orderService.CreateOne(orderCreateDto);
             return CreatedAtAction(nameof(CreateOne), orderCreated);
-            // return CreatedAtAction(nameof(GetOneById), new { id = orderReadDto.User }, orderReadDto);
         }
 
         [Authorize]
