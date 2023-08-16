@@ -16,6 +16,10 @@ namespace WebApi.Domain.src.Entities
         public string Phone { get; set; } = string.Empty;
         public string Avatar { get; set; } = string.Empty;
         public UserRole UserRole { get; set; }
+
+        [JsonIgnore]
+        public List<Order> Orders { get; set; } = new List<Order>();
+
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

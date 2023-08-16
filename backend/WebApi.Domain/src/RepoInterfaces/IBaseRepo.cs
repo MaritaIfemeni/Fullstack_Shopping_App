@@ -4,7 +4,7 @@ namespace WebApi.Domain.src.RepoInterfaces
 {
     public interface IBaseRepo<T>
     {
-        Task<IEnumerable<T>> GetAll(QueryOptions queryOptions);  // should consider the sorting, searching and pagination all from here
+        Task<IEnumerable<T>> GetAll(QueryOptions queryOptions);
         Task<T?> GetOneById(Guid id);
         Task<T> UpdateOneById(T updatedEntity);
         Task<bool> DeleteOneById(T entityToDelete);

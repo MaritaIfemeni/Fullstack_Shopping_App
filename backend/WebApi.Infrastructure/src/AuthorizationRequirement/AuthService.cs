@@ -27,12 +27,12 @@ namespace WebApi.Infrastructure.src.AuthorizationRequirement
             var isAuthenticated = PasswordService.VerifyPassword(credentials.Password, foundUserEmail.Password, foundUserEmail.Salt);
             if (!isAuthenticated)
             {
-                throw new Exception("Invalid Password");
+                throw ServiceExeption.UnAuthAexeption();
             }
             return GenerateToken(foundUserEmail);
         }
 
-        private string GenerateToken(User user)  // this logic needs to go infra layer!!! And Hide the key
+        private string GenerateToken(User user)
         {
             var claims = new List<Claim>{
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

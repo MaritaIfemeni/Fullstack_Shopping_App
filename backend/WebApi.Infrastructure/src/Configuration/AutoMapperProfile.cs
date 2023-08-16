@@ -16,11 +16,11 @@ namespace WebApi.Infrastructure.src.Configuration
             CreateMap<Product, ProductReadDto>();
             CreateMap<ProductUpdateDto, Product>();
             CreateMap<ProductCreateDto, Product>();
-
+            CreateMap<ImageDto, Image>();
+            CreateMap<Image, ImageDto>();
 
             CreateMap<OrderUpdateDto, Order>();
-            CreateMap<Order, OrderReadDto>()
-                .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
+            CreateMap<Order, OrderReadDto>();
             CreateMap<OrderCreateDto, Order>();
             CreateMap<Order, OrderCreateDto>();
             CreateMap<OrderReadDto, Order>();

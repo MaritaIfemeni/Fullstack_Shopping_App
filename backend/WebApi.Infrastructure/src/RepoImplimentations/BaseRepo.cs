@@ -33,23 +33,27 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
         public async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
         {
             var query = _dbSet.AsQueryable();
-
+            
             if (!string.IsNullOrEmpty(queryOptions.Search))
             {
+                queryOptions.Search = queryOptions.Search.ToLower();
+
                 if (typeof(T) == typeof(Product))
                 {
-                    query = query.Where(e => ((Product)(object)e).ProductName.Contains(queryOptions.Search));
+                    query = query.Where(e => ((Product)(object)e).ProductName.ToLower().Contains(queryOptions.Search));
+                    query = query.Include(p => ((Product)(object)p).ProductImages);
                 }
                 else if (typeof(T) == typeof(User))
                 {
                     query = query.Where(e =>
-                        ((User)(object)e).FirstName.Contains(queryOptions.Search) ||
-                        ((User)(object)e).LastName.Contains(queryOptions.Search)
+                        ((User)(object)e).FirstName.ToLower().Contains(queryOptions.Search) ||
+                        ((User)(object)e).LastName.ToLower().Contains(queryOptions.Search)
                     );
                 }
                 else if (typeof(T) == typeof(Order))
                 {
-                    query = query.Where(e => ((Order)(object)e).OrderStatus.ToString().Contains(queryOptions.Search));
+                    query = query.Where(e => ((Order)(object)e).OrderStatus.ToString().ToLower().Contains(queryOptions.Search));
+                    query = query.Include(o => ((Order)(object)o).OrderDetails);
                 }
             }
             if (queryOptions.Descending)
@@ -57,6 +61,7 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
                 if (typeof(T) == typeof(Product))
                 {
                     query = query.OrderByDescending(e => EF.Property<DateTime>((Product)(object)e, queryOptions.Order));
+                    query = query.Include(p => ((Product)(object)p).ProductImages);
                 }
                 else if (typeof(T) == typeof(User))
                 {
@@ -65,6 +70,7 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
                 else if (typeof(T) == typeof(Order))
                 {
                     query = query.OrderByDescending(e => EF.Property<DateTime>((Order)(object)e, queryOptions.Order));
+                    query = query.Include(o => ((Order)(object)o).OrderDetails);
                 }
             }
             else
@@ -72,6 +78,7 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
                 if (typeof(T) == typeof(Product))
                 {
                     query = query.OrderBy(e => EF.Property<DateTime>((Product)(object)e, queryOptions.Order));
+                    query = query.Include(p => ((Product)(object)p).ProductImages);
                 }
                 else if (typeof(T) == typeof(User))
                 {
@@ -80,6 +87,7 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
                 else if (typeof(T) == typeof(Order))
                 {
                     query = query.OrderBy(e => EF.Property<DateTime>((Order)(object)e, queryOptions.Order));
+                    query = query.Include(o => ((Order)(object)o).OrderDetails);
                 }
             }
             query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.PageSize)

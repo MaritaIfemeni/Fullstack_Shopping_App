@@ -2,6 +2,7 @@ using AutoMapper;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Domain.src.Shared;
 using WebApi.Domain.src.RepoInterfaces;
+using WebApi.Business.src.Shared;
 
 namespace WebApi.Business.src.Services.ServiceImplementations
 {
@@ -24,12 +25,12 @@ namespace WebApi.Business.src.Services.ServiceImplementations
                 await _baseRepo.DeleteOneById(foundItem);
                 return true;
             }
-            return false; ///should it throw an exception instead?
+            return false;
         }
 
         public virtual async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
         {
-            queryOptions.Search = "";
+
             var result = await _baseRepo.GetAll(queryOptions);
             return _mapper.Map<IEnumerable<TReadDto>>(result);
         }
@@ -45,7 +46,7 @@ namespace WebApi.Business.src.Services.ServiceImplementations
 
             if (entity == null)
             {
-                throw new Exception($"Entity with id {id} not found.");
+                throw ServiceExeption.NotFoundExeption();
             }
 
             _mapper.Map(updated, entity);

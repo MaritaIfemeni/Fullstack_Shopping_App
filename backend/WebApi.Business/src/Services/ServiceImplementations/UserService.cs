@@ -20,7 +20,7 @@ namespace WebApi.Business.src.Services.ServiceImplementations
             var foundUser = await _userRepo.GetOneById(id);
             if (foundUser is null)
             {
-                throw new Exception("Not Found"); // change this to a custom exception
+                throw ServiceExeption.NotFoundExeption();
             }
             PasswordService.HashPassword(newPassword, out var hashedPassword, out var salt);
             foundUser.Password = hashedPassword;

@@ -38,7 +38,12 @@ namespace WebApi.Infrastructure.src.Database
             modelBuilder.HasPostgresEnum<UserRole>();
             modelBuilder.HasPostgresEnum<OrderStatus>();
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
             modelBuilder.Entity<OrderDetail>().HasKey("OrderId", "ProductId"); 
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User) 
+                .WithMany(u => u.Orders) 
+                .HasForeignKey(o => o.UserId); 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.ProductImages) 
                 .WithOne()                     

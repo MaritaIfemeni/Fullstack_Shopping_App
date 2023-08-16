@@ -4,6 +4,7 @@ using WebApi.Domain.src.Shared;
 
 namespace WebApi.Controller.src.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api/v1/[controller]s")]
     public class CrudController<T, TReadDto, TCreateDto, TUpdateDto> : ControllerBase
@@ -18,6 +19,7 @@ namespace WebApi.Controller.src.Controllers
         [HttpGet]
         public virtual async Task<ActionResult<IEnumerable<TReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
         {
+           
             return Ok(await _baseService.GetAll(queryOptions));
         }
 

@@ -3,6 +3,7 @@ using WebApi.Domain.src.Entities;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using WebApi.Domain.src.Shared;
 
 namespace WebApi.Controller.src.Controllers
 {
@@ -15,26 +16,32 @@ namespace WebApi.Controller.src.Controllers
             _userService = baseService;
         }
 
-        // [Authorize(Roles = "Admin")]
-        //     // [HttpPost("admin")]
-        //     public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto)
-        //     {
-        //         return CreatedAtAction(nameof(CreateAdmin), await _userService.GreateAdmin(dto));
-        //     }
+[AllowAnonymous]
+        [HttpPost]
+        public override async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto dto)
+        {
+            return CreatedAtAction(nameof(CreateOne), await _userService.CreateOne(dto));
+        }
 
 
-        //    //[Authorize(Roles = "Admin")]
-        //     public override async Task<ActionResult<IEnumerable<UserReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
-        //     {
+        [Authorize(Roles = "Admin")]
+        [HttpPost("admin")]
+        public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto)
+        {
+            return CreatedAtAction(nameof(CreateAdmin), await _userService.GreateAdmin(dto));
+        }
 
-        //         return Ok(await _userService.GetAll(queryOptions));
-        //     }
+        //[Authorize(Roles = "Admin")]
+        public override async Task<ActionResult<IEnumerable<UserReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
+        {
+            return Ok(await _userService.GetAll(queryOptions));
+        }
 
-
-        [AllowAnonymous]
+        [AllowAnonymous]  //add resourse base auth if time
         public override async Task<ActionResult<UserReadDto>> GetOneById([FromRoute] Guid id)
         {
             return Ok(await _userService.GetOneById(id));
         }
+
     }
 }
