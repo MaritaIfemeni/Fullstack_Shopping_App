@@ -33,33 +33,6 @@ namespace WebApi.Controller.src.Controllers
             return Ok(await _orderService.GetOneById(id));
         }
 
-        //wanted to make resourse based authorization so that user that is logges in can only see his own orders and admin can use it as well
-        //but i could not make it work
-
-        // [Authorize]   
-        // public override async Task<ActionResult<OrderReadDto>> GetOneById([FromRoute] Guid id)
-        // {
-        //     var user = HttpContext.User;
-        //     var order = await _orderService.GetOneById(id);
-
-        //     // Check if the user is an admin
-        //     if (user.IsInRole("Admin"))
-        //     {
-        //         return await base.GetOneById(id);
-        //     }
-
-        //     // Check if the user is the owner of the order
-        //     var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order, "OwnerOnly");
-        //     if (authorizeOwner.Succeeded)
-        //     {
-        //         return await base.GetOneById(id);
-        //     }
-        //     else
-        //     {
-        //         return new ForbidResult();
-        //     }
-        // }
-
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
@@ -80,8 +53,6 @@ namespace WebApi.Controller.src.Controllers
         {
             return StatusCode(204, await _orderService.DeleteOneById(id));
         }
-
-
 
     }
 }

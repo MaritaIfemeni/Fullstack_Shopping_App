@@ -4,15 +4,17 @@ using WebApi.Business.src.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace WebApi.Controller.src.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class UserController : CrudController<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
+        private readonly IAuthorizationService _authorizationService;
         private readonly IUserService _userService;
-
-        public UserController(IUserService baseService) : base(baseService)
+        public UserController(IUserService baseService, IAuthorizationService authService) : base(baseService)
         {
+            _authorizationService = authService;
             _userService = baseService;
         }
 
@@ -29,11 +31,32 @@ namespace WebApi.Controller.src.Controllers
             return CreatedAtAction(nameof(CreateAdmin), await _userService.GreateAdmin(dto));
         }
 
-        // [Authorize(Roles = "Admin")]  /// add here the resouce based authorization so that also the user can get his own data
-        // public override async Task<ActionResult<UserReadDto>> GetOneById([FromRoute] Guid id)
-        // {
-        //     return Ok(await _userService.GetOneById(id));
-        // }
+        [Authorize(Roles = "Admin")]
+        public override async Task<ActionResult<UserReadDto>> GetOneById([FromRoute] Guid id)
+        {
+            return Ok(await _userService.GetOneById(id));
+        }
 
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<ActionResult<UserReadDto>> GetProfile([FromRoute] Guid id)
+        {
+            var user = HttpContext.User;
+            Console.WriteLine(user);
+            Console.WriteLine("user: " + user.Identity?.Name);
+            var userId = await _userService.GetOneById(id);
+            Console.WriteLine("somethin" + userId);
+            Console.WriteLine("userId: " + userId?.Id);
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, userId, "OwnerOnly");
+            if (authorizeOwner.Succeeded)
+            {
+                return Ok(await _userService.GetOneById(id));
+            }
+            else
+            {
+                return new ForbidResult();
+            }
+
+        }
     }
 }
