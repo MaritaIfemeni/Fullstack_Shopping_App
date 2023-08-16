@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Domain.src.Shared;
 
 namespace WebApi.Controller.src.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("api/v1/[controller]s")]
     public class CrudController<T, TReadDto, TCreateDto, TUpdateDto> : ControllerBase
@@ -37,7 +37,7 @@ namespace WebApi.Controller.src.Controllers
         }
 
         [HttpPatch("{id:Guid}")]
-        public virtual async Task<ActionResult<TReadDto>> UpdateOneById([FromRoute] Guid id, [FromForm] TUpdateDto update)
+        public virtual async Task<ActionResult<TReadDto>> UpdateOneById([FromRoute] Guid id, [FromBody] TUpdateDto update)
         {
             return Ok(await _baseService.UpdateOneById(id, update));
         }

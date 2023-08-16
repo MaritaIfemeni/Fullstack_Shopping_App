@@ -13,14 +13,15 @@ namespace WebApi.Infrastructure.src.AuthorizationRequirement
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerOnlyRequirement requirement, OrderReadDto resource)
         {
-            var authenticatedUser = context.User;
-            var userIds = authenticatedUser.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            if (resource.UserId.ToString() == userIds)
             {
-                context.Succeed(requirement);
+                var authenticatedUser = context.User;
+                var userId = authenticatedUser.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                if (resource.UserId.ToString() == userId)
+                {
+                    context.Succeed(requirement);
+                }
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
         }
-
     }
 }

@@ -9,8 +9,6 @@ namespace WebApi.Domain.src.Entities
         public string DeliveryAddress { get; set; }
         public Guid UserId { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
-
-        [JsonIgnore]
         public User User { get; set; }
     }
     

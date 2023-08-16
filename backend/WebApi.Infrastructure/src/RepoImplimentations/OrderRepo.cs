@@ -20,7 +20,11 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
         {
             order.OrderStatus = OrderStatus.Processing;
             return await base.CreateOne(order);
-            
         }
+        public override async Task<Order?> GetOneById(Guid id)
+        {
+             return await _orders.Include(p => p.OrderDetails).FirstOrDefaultAsync(p => p.Id == id);
+        }
+
     }
 }

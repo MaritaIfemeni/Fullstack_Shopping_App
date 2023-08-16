@@ -7,9 +7,9 @@ using WebApi.Domain.src.Shared;
 
 namespace WebApi.Controller.src.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductController : CrudController<Product, ProductReadDto, ProductCreateDto, ProductUpdateDto>
     {
-
         private readonly IProductService _productService;
         public ProductController(IProductService baseService) : base(baseService)
         {
@@ -17,12 +17,14 @@ namespace WebApi.Controller.src.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public override async Task<ActionResult<IEnumerable<ProductReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
         {
             return Ok(await _productService.GetAll(queryOptions));
         }
         
         [AllowAnonymous]
+        [HttpGet("{id}")]
         public override async Task<ActionResult<ProductReadDto>> GetOneById([FromRoute] Guid id)
         {
             return Ok(await _productService.GetOneById(id));

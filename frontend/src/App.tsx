@@ -1,30 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { RouterProvider } from "react-router-dom";
 
-interface User {
-  username: string;
-}
+import routes from "./routes/routes";
+import "./app.css";
+
 
 const App = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch("http://localhost:5292/api/v1/users");
-      const data = await response.json();
-      setUsers(data);
-    };
-
-    fetchUsers();
-  }, []);
-
-  return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.username}>{user.username}</li>
-      ))}
-    </ul>
-  );
+  return <RouterProvider router={routes} />;
 };
 
 export default App;

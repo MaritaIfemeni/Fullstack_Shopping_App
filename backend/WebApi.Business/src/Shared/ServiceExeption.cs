@@ -19,6 +19,11 @@ namespace WebApi.Business.src.Shared
         {
             return new ServiceExeption { StatusCode = 401, Message = message };
         }
+
+        public static ServiceExeption FieldRequirementsExeption(string message = "Field requirements are not met")
+        {
+            return new ServiceExeption { StatusCode = 400, Message = message };
+        }
         
     }
 }

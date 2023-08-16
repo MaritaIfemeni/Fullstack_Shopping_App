@@ -30,6 +30,10 @@ namespace WebApi.Business.src.Services.ServiceImplementations
 
         public override async Task<UserReadDto> CreateOne(UserCreateDto dto)
         {
+            if (!dto.Email.Contains("@"))
+            {
+                throw ServiceExeption.FieldRequirementsExeption("Email is not valid");
+            }
             var entity = _mapper.Map<User>(dto);
             PasswordService.HashPassword(dto.Password, out var hashedPassword, out var salt);
             entity.Password = hashedPassword;
@@ -40,6 +44,10 @@ namespace WebApi.Business.src.Services.ServiceImplementations
 
         public async Task<UserReadDto> GreateAdmin(UserCreateDto CreatedDto)
         {
+            if (!CreatedDto.Email.Contains("@"))
+            {
+                throw ServiceExeption.FieldRequirementsExeption("Email is not valid");
+            }
             var entity = _mapper.Map<User>(CreatedDto);
             PasswordService.HashPassword(CreatedDto.Password, out var hashedPassword, out var salt);
             entity.Password = hashedPassword;

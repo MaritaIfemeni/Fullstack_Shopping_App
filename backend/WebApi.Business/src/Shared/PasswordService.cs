@@ -14,7 +14,7 @@ namespace WebApi.Business.src.Shared
 
         public static bool VerifyPassword(string originalPassword, string hashedPassword, byte[] salt)
         {
-            var hmac = new HMACSHA256(salt); // This is created with an assigned key
+            var hmac = new HMACSHA256(salt); 
             var hashedOriginal = Encoding.UTF8.GetString(hmac.ComputeHash(Encoding.UTF8.GetBytes(originalPassword)));
             return hashedOriginal == hashedPassword;
         }
