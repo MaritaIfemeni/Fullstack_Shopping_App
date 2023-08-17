@@ -9,7 +9,7 @@ namespace WebApi.Controller.src.Controllers
     [Route("api/v1/[controller]")]
     public class AuthController : ControllerBase
     {
-         private readonly IAuthService _authService;
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {
@@ -17,6 +17,9 @@ namespace WebApi.Controller.src.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         public async Task<ActionResult<string>> VerifyCredentials([FromBody] UserCredentialsDto credentials)
         {
             return Ok(await _authService.VerifyCredentials(credentials));

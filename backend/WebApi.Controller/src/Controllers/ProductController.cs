@@ -18,13 +18,19 @@ namespace WebApi.Controller.src.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         public override async Task<ActionResult<IEnumerable<ProductReadDto>>> GetAll([FromQuery] QueryOptions queryOptions)
         {
             return Ok(await _productService.GetAll(queryOptions));
         }
-        
+
         [AllowAnonymous]
         [HttpGet("{id}")]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         public override async Task<ActionResult<ProductReadDto>> GetOneById([FromRoute] Guid id)
         {
             return Ok(await _productService.GetOneById(id));

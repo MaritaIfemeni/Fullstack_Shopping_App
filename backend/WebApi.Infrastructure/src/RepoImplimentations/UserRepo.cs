@@ -29,13 +29,6 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
             return await _users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User> UpdatePassword(User user)
-        {
-            _users.Update(user);
-            await _context.SaveChangesAsync();
-            return user;
-        }
-
         public override async Task<User> CreateOne(User entity)
         {
             entity.UserRole = UserRole.User;

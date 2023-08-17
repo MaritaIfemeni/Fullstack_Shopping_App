@@ -15,19 +15,6 @@ namespace WebApi.Business.src.Services.ServiceImplementations
             _userRepo = userRepo;
         }
 
-        public async Task<UserReadDto> UpdatePassword(Guid id, string newPassword)
-        {
-            var foundUser = await _userRepo.GetOneById(id);
-            if (foundUser is null)
-            {
-                throw ServiceExeption.NotFoundExeption();
-            }
-            PasswordService.HashPassword(newPassword, out var hashedPassword, out var salt);
-            foundUser.Password = hashedPassword;
-            foundUser.Salt = salt;
-            return _mapper.Map<UserReadDto>(await _userRepo.UpdatePassword(foundUser));
-        }
-
         public override async Task<UserReadDto> CreateOne(UserCreateDto dto)
         {
             if (!dto.Email.Contains("@"))
