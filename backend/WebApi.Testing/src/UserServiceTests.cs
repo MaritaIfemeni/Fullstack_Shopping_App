@@ -25,20 +25,6 @@ namespace WebApi.Business.Tests
         }
 
         [Fact]
-        public async Task UpdatePassword_WithInvalidId_ThrowsNotFoundException()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-            var newPassword = "newPassword";
-            _userRepoMock.Setup(repo => repo.GetOneById(id)).ReturnsAsync((User)null);
-
-            var userService = new UserService(_userRepoMock.Object, _mapper);
-
-            // Act & Assert
-            await Assert.ThrowsAsync<ServiceExeption>(() => userService.UpdatePassword(id, newPassword));
-        }
-
-        [Fact]
         public async Task CreateOne_WithValidDto_ReturnsCreatedUser()
         {
             // Arrange

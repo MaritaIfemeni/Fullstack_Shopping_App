@@ -12,7 +12,7 @@ function Copyright(props: any) {
     >
       {"Copyright © "}
       <Link color="inherit" href="/">
-        MI E-Shop Enterprises
+        MI FULLSTACK E-Shop Enterprises
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

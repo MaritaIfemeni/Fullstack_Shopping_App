@@ -15,7 +15,6 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
             _context = dbContext;
 
         }
-        
         public override async Task<Order> CreateOne(Order order)
         {
             order.OrderStatus = OrderStatus.Processing;
@@ -25,6 +24,5 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
         {
              return await _orders.Include(p => p.OrderDetails).FirstOrDefaultAsync(p => p.Id == id);
         }
-
     }
 }

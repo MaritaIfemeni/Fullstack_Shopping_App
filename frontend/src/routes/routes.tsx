@@ -6,6 +6,7 @@ import HomePage from "../pages/HomePage";
 import PageNotFound from "../pages/PageNotFound";
 import LoginPage from "../pages/LoginPage";
 import ProductPage from "../pages/ProductPage";
+import SingleProductPage from "../pages/SingleProductPage";
 
 
 
@@ -18,6 +19,10 @@ const routes: any = createBrowserRouter([
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: "/product/:id",
+          element: <SingleProductPage />,
         },
         {
           path: "/login",

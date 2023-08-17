@@ -24,13 +24,30 @@ const makeApiCall = async <T>(config: any): Promise<T> => {
   }
 };
 
-export const fetchAllProductsApi = async (pageNumber: number, pageSize: number, search?: string) => {
-    const url = search ? `/?Search=${search}&PageNumber=${pageNumber}&PageSize=${pageSize}` : `/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
-    return makeApiCall<Product[]>({
-      method: "GET",
-      url,
-    });
-  };
+export const fetchAllProductsApi = async ({ search, order, descending, pageNumber, pageSize }: { search?: string, order?: string, descending?: boolean, pageNumber: number, pageSize: number }) => {
+  let url = `/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+  if (search) {
+    url += `&Search=${search}`;
+  }
+  if (order) {
+    url += `&Order=${order}`;
+  }
+  if (descending) {
+    url += `&Descending=${descending}`;
+  }
+  return makeApiCall<Product[]>({
+    method: "GET",
+    url,
+  });
+};
+
+// export const fetchAllProductsApi = async (pageNumber: number, pageSize: number, search?: string) => {
+//     const url = search ? `/?Search=${search}&PageNumber=${pageNumber}&PageSize=${pageSize}` : `/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
+//     return makeApiCall<Product[]>({
+//       method: "GET",
+//       url,
+//     });
+//   };
 
 export const createNewProductApi = async (product: NewProduct) => {
   return makeApiCall<Product>({

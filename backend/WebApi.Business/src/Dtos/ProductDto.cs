@@ -4,6 +4,7 @@ namespace WebApi.Business.src.Dtos
 {
     public class ProductReadDto
     {
+        public Guid Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public float Price { get; set; }
         public string Description { get; set; } = string.Empty;
