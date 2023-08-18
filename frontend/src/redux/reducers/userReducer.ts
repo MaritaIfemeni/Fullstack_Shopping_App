@@ -41,17 +41,17 @@ const initialState: UserReducer = {
   error: "",
 };
 
-export const fetchAllUsers = createAsyncThunk(
-  "user/fetchAllUsers",
-  async () => {
-    return await fetchAllUsersApi();
-  }
-);
-
 export const createNewUser = createAsyncThunk(
   "user/createNewUser",
   async (user: NewUser) => {
     return await createNewUserApi(user);
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk(
+  "user/fetchAllUsers",
+  async () => {
+    return await fetchAllUsersApi();
   }
 );
 
@@ -109,7 +109,6 @@ export const login = createAsyncThunk(
       });
       console.log(result.data);
       localStorage.setItem("token", result.data);
-
       const authentication = await dispatch(authenticate(result.data));
       return authentication.payload as User;
     } catch (e) {

@@ -40,6 +40,7 @@ import { Product } from "../types/Product";
 import useDebounce from "../hooks/useDebounce";
 import { addCartItem } from "../redux/reducers/cartReducer";
 
+
 const ProductPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");

@@ -25,20 +25,6 @@ const makeApiCall = async <T>(config: any): Promise<T> => {
   }
 };
 
-export const fetchAllUsersApi = async () => {
-  return makeApiCall<any[]>({
-    method: "GET",
-    url: "/",
-  });
-};
-
-export const fetchUserByIdApi = async (id: string) => {
-  return makeApiCall<User>({
-    method: "GET",
-    url: `/${id}`,
-  });
-};
-
 export const createNewUserApi = async (user: NewUser) => {
   return makeApiCall<User>({
     method: "POST",
@@ -47,17 +33,51 @@ export const createNewUserApi = async (user: NewUser) => {
   });
 };
 
+export const fetchAllUsersApi = async () => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return makeApiCall<any[]>({
+    method: "GET",
+    url: "/",
+    headers: headers,
+  });
+};
+
+export const fetchUserByIdApi = async (id: string) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return makeApiCall<User>({
+    method: "GET",
+    url: `/${id}`,
+    headers: headers,
+  });
+};
+
 export const updateUserApi = async (user: UpdateUser) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   return makeApiCall<User>({
     method: "PATCH",
     url: `/${user.id}`,
+    headers: headers,
     data: user,
   });
 };
 
 export const deleteUserApi = async (id: string) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   return makeApiCall<User>({
     method: "DELETE",
     url: `/${id}`,
+    headers: headers,
   });
 };

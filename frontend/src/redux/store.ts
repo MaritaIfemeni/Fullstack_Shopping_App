@@ -7,6 +7,7 @@ import {
   loadCartStateFromLocalStorage,
 } from "../utils/localStorageUtils";
 import modalReducer from "./reducers/modalReducer";
+import userReducer from "./reducers/userReducer";
 
 const persistedCartState = loadCartStateFromLocalStorage();
 
@@ -15,6 +16,7 @@ const store = configureStore({
     productsReducer,
     cartReducer,
     modalReducer,
+    userReducer,
   },
   preloadedState: {
     cartReducer: persistedCartState,

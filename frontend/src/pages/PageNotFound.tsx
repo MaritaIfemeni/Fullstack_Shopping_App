@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+
+import { Link } from "react-router-dom";
 
 const PageNotFound = () => {
   return (
-    <div>PageNotFound</div>
-  )
-}
+    <div>
+      PageNotFound
+      <h2>
+        <Link to="/">Go to Home</Link>
+      </h2>
+    </div>
+  );
+};
 
-export default PageNotFound
+export default PageNotFound;

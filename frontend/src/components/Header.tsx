@@ -17,27 +17,27 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Cart from "../pages/Cart";
 import useModal from "../hooks/useModal";
-// import { logoutToken } from "../redux/reducers/userReducer";
+import { logoutToken } from "../redux/reducers/userReducer";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  //const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
+  const currentUser = useAppSelector((state) => state.userReducer.currentUser);
   const { toggle, isOpen } = useModal();
-  //const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { totalProducts } = useAppSelector((state) => state.cartReducer);
 
-  // const handleLogout = () => {
-  //   dispatch(logoutToken());
-  //   setAnchorEl(null);
-  //   navigate("/");
-  // };
-  // const handleMenuOpen = (e: any) => {
-  //   setAnchorEl(e.currentTarget);
-  // };
-  // const handleMenuClose = () => {
-  //   setAnchorEl(null);
-  // };
+  const handleLogout = () => {
+    dispatch(logoutToken());
+    setAnchorEl(null);
+    navigate("/");
+  };
+  const handleMenuOpen = (e: any) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar position="static">
@@ -50,28 +50,21 @@ const Header = () => {
         >
           MI E-Shop
         </Typography>
-
-
         <Typography sx={{ flexGrow: 25 }}>
           <Button component={Link} to="/products" color="inherit">
             Products
           </Button>
         </Typography>
-
-
-       <IconButton color="inherit" onClick={toggle} sx={{ flexGrow: 0.5 }}>
+        <IconButton color="inherit" onClick={toggle} sx={{ flexGrow: 0.5 }}>
           <Badge badgeContent={totalProducts} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-        <Cart isOpen={isOpen} toggle={toggle} /> 
-
-
-
-        {/* {currentUser && (
+        <Cart isOpen={isOpen} toggle={toggle} />
+        {currentUser && (
           <>
             <Typography variant="subtitle2" sx={{ marginRight: "1rem" }}>
-              Logged in as {currentUser.name}
+              Logged in as {currentUser.firstName}
             </Typography>
           </>
         )}
@@ -117,7 +110,7 @@ const Header = () => {
           <Button component={Link} to="/login" color="inherit">
             Log In
           </Button>
-        )} */}
+        )}
       </Toolbar>
     </AppBar>
   );
