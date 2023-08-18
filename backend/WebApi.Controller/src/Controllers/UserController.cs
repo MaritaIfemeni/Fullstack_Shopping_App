@@ -1,13 +1,13 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using WebApi.Business.src.Dtos;
 using WebApi.Domain.src.Entities;
 using WebApi.Business.src.Services.ServiceInterfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-
 
 namespace WebApi.Controller.src.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : CrudController<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
         private readonly IAuthorizationService _authorizationService;
@@ -47,29 +47,48 @@ namespace WebApi.Controller.src.Controllers
             return Ok(await _userService.GetOneById(id));
         }
 
-        [Authorize]
+        // [Authorize]
+        // [HttpGet("profile")]
+        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
+        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        // public async Task<ActionResult<UserReadDto>> GetProfile([FromRoute] Guid id)
+        // {
+        //     var user = HttpContext.User;
+        //     Console.WriteLine(user);
+        //     Console.WriteLine("user: " + user.Identity?.Name);
+        //     var userId = await _userService.GetOneById(id);
+        //     Console.WriteLine("somethin" + userId);
+        //     Console.WriteLine("userId: " + userId?.Id);
+        //     var authorizeOwner = await _authorizationService.AuthorizeAsync(user, userId, "OwnerOnly");
+        //     if (authorizeOwner.Succeeded)
+        //     {
+        //         return Ok(await _userService.GetOneById(id));
+        //     }
+        //     else
+        //     {
+        //         return new ForbidResult();
+        //     }
+
+        // }
+
         [HttpGet("profile")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
-        public async Task<ActionResult<UserReadDto>> GetProfile([FromRoute] Guid id)
+        public ActionResult<UserReadDto> GetProfile()
         {
-            var user = HttpContext.User;
-            Console.WriteLine(user);
-            Console.WriteLine("user: " + user.Identity?.Name);
-            var userId = await _userService.GetOneById(id);
-            Console.WriteLine("somethin" + userId);
-            Console.WriteLine("userId: " + userId?.Id);
-            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, userId, "OwnerOnly");
-            if (authorizeOwner.Succeeded)
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
             {
-                return Ok(await _userService.GetOneById(id));
+
+
+                return Ok(_userService.GetOneById(userId)); 
             }
             else
             {
-                return new ForbidResult();
+                return BadRequest("Unable to obtain the user ID from claims.");
             }
-
         }
     }
 }

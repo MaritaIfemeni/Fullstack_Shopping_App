@@ -3,8 +3,9 @@ import axios from "axios";
 import { User } from "../types/User";
 import { NewUser } from "../types/NewUser";
 import { UpdateUser } from "../types/UpdateUser";
+import { UserCredential } from "../types/UserCredentials";
 
-const API_BASE_URL = "https://localhost:5001/api/users";
+const API_BASE_URL = "http://localhost:5292/api/v1/users";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
