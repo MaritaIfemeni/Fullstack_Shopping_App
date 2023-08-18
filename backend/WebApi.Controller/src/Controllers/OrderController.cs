@@ -9,11 +9,9 @@ namespace WebApi.Controller.src.Controllers
 {
     public class OrderController : CrudController<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
-        private readonly IAuthorizationService _authorizationService;
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService baseService, IAuthorizationService authService) : base(baseService)
+        public OrderController(IOrderService baseService) : base(baseService)
         {
-            _authorizationService = authService;
             _orderService = baseService;
         }
 
@@ -68,6 +66,5 @@ namespace WebApi.Controller.src.Controllers
         {
             return StatusCode(204, await _orderService.DeleteOneById(id));
         }
-
     }
 }

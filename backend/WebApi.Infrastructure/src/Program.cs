@@ -45,10 +45,6 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-// add policy based requirement handler to service
-builder.Services
-.AddSingleton<OwnerOnlyRequirementHandler>();
-
 //Config route
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -73,10 +69,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        };
    });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("OwnerOnly", policy => policy.Requirements.Add(new OwnerOnlyRequirement()));
-});
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
