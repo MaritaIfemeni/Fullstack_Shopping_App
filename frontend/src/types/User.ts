@@ -10,6 +10,6 @@ export interface User {
     phone: string;
     avatar: string;
     password: string;
-    UserRole: "customer" | "admin";
+    userRole: "User" | "Admin";
     isAdmin: boolean;
 }

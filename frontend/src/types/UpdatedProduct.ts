@@ -7,6 +7,6 @@ export interface UpdatedProduct {
     description: string;
     productImages: {
       link: string;
-    };
+    }[];
   };
 }

@@ -50,25 +50,40 @@ export const fetchAllProductsApi = async ({ search, order, descending, pageNumbe
 //   };
 
 export const createNewProductApi = async (product: NewProduct) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   return makeApiCall<Product>({
     method: "POST",
     url: "/",
+    headers: headers,
     data: product,
   });
 };
 
 export const updateProductApi = async (product: UpdatedProduct) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   return makeApiCall<Product>({
     method: "PATCH",
     url: `/${product.id}`,
+    headers: headers,
     data: product.data,
   });
 };
 
 export const deleteProductApi = async (id: string) => {
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   return makeApiCall<{ result: boolean; id: string }>({
     method: "DELETE",
     url: `/${id}`,
+    headers: headers,
   });
 };
 

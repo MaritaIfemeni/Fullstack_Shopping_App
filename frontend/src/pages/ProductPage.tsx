@@ -56,7 +56,7 @@ const ProductPage: React.FC = () => {
     dispatch(
       fetchAllProducts({
         pageNumber: 1,
-        pageSize: 6,
+        pageSize: 12,
         search: debouncedSearch,
         order,
         descending,

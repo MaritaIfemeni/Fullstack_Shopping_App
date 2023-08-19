@@ -49,7 +49,6 @@ const UserList = () => {
               <TableCell>User Email</TableCell>
               <TableCell>User Avatar</TableCell>
               <TableCell>User Role</TableCell>
-              <TableCell>Password</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -65,26 +64,7 @@ const UserList = () => {
                     variant="square"
                   />
                 </TableCell>
-                <TableCell>{user.UserRole}</TableCell>
-                <TableCell>
-                  {showPasswordList[index] ? (
-                    user.password
-                  ) : (
-                    <TextField
-                      type="password"
-                      value="********" // Display a masked password value
-                      variant="standard"
-                      disabled
-                    />
-                  )}
-                  <IconButton onClick={() => handleShowPassword(index)}>
-                    {showPasswordList[index] ? (
-                      <VisibilityOff />
-                    ) : (
-                      <Visibility />
-                    )}
-                  </IconButton>
-                </TableCell>
+                <TableCell>{user.userRole}</TableCell>
               </TableRow>
             ))}
           </TableBody>

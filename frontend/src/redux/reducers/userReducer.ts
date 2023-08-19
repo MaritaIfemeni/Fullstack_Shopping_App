@@ -90,7 +90,8 @@ export const authenticate = createAsyncThunk(
       );
       console.log(authentication.data);
       const user: User = authentication.data;
-      user.isAdmin = user.UserRole === "admin";
+      user.isAdmin = user.userRole === "Admin"; // Corrected comparison
+
       return authentication.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -103,11 +104,11 @@ export const login = createAsyncThunk(
   "user/login",
   async ({ email, password }: UserCredential, { dispatch }) => {
     try {
-      const result = await axios.post("http://localhost:5292/api/v1/auth", {
-        email,
-        password,
-      });
-      console.log(result.data);
+      const result = await axios.post<string>(
+        "http://localhost:5292/api/v1/auth",
+        { email, password }
+      );
+      console.log("from login" + result.data);
       localStorage.setItem("token", result.data);
       const authentication = await dispatch(authenticate(result.data));
       return authentication.payload as User;
@@ -125,7 +126,10 @@ export const checkStoredToken = createAsyncThunk(
       const token = localStorage.getItem("token");
       if (token) {
         const authentication = await dispatch(authenticate(token));
-        return authentication.payload as User;
+
+        if (!(authentication.payload instanceof AxiosError)) {
+          return authentication.payload as User;
+        }
       }
       return null;
     } catch (e) {
@@ -161,7 +165,7 @@ const usersSlice = createSlice({
         postcode: action.payload.postcode,
         phone: action.payload.phone,
         email: action.payload.email,
-        userRole: action.payload.UserRole,
+        userRole: action.payload.userRole,
         avatar: action.payload.avatar,
       };
     },
