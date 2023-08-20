@@ -40,8 +40,7 @@ import { Product } from "../types/Product";
 import useDebounce from "../hooks/useDebounce";
 import { addCartItem } from "../redux/reducers/cartReducer";
 
-
-const ProductPage: React.FC = () => {
+const ProductPage = () => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce<string>(search, 1000);
@@ -50,19 +49,30 @@ const ProductPage: React.FC = () => {
   const [descending, setDescending] = useState<boolean>(true);
   const [priceFilter, setPriceFilter] = useState<number>(0);
   const products = useAppSelector((state) => state.productsReducer.products);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 6;
 
-  /// fix this pagination if time!
   useEffect(() => {
     dispatch(
       fetchAllProducts({
-        pageNumber: 1,
-        pageSize: 12,
+        pageNumber: currentPage,
+        pageSize: itemsPerPage,
         search: debouncedSearch,
         order,
         descending,
       })
     );
-  }, [dispatch, debouncedSearch, order, descending]);
+  }, [dispatch, debouncedSearch, order, descending, currentPage]);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleLoadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -84,33 +94,6 @@ const ProductPage: React.FC = () => {
 
   const handleAddToCart = (product: Product) => {
     dispatch(addCartItem(product));
-  };
-
-  const handleNextPage = () => {
-    setPage(page + 1);
-  };
-  const handlePrevPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
-
-  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      fetchAllProducts({
-        pageNumber: 1,
-        pageSize: parseInt(event.target.value),
-        search: debouncedSearch,
-        order,
-        descending,
-      })
-    );
-  };
-
-  const handlePageNumberChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPage(parseInt(event.target.value));
   };
 
   return (
@@ -157,14 +140,13 @@ const ProductPage: React.FC = () => {
           />
         </div>
       </Typography>
-
       <Grid container spacing={4}>
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
-              <CardMedia
+               <CardMedia
                 component="div"
                 sx={{
                   pt: "56.25%",
@@ -192,18 +174,12 @@ const ProductPage: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-      <Button onClick={handlePrevPage} disabled={page === 1}>
-        Prev
+      <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+        Go to Previous Page
       </Button>
-      <Button onClick={handleNextPage}>Next</Button>
-      <div>
-        <label>Page Number:</label>
-        <input type="number" value={1} onChange={handlePageNumberChange} />
-      </div>
-      <div>
-        <label>Page Size:</label>
-        <input type="number" value={5} onChange={handlePageSizeChange} />
-      </div>
+      <Button onClick={handleLoadMore} disabled={products.length < itemsPerPage}>
+      Load More
+      </Button>
     </Container>
   );
 };

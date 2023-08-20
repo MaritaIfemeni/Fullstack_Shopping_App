@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -12,28 +13,24 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import { fetchAllUsers } from "../redux/reducers/userReducer";
+import { fetchAllUsers, deleteUser } from "../redux/reducers/userReducer";
 
 const UserList = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.userReducer.users);
-  const [showPasswordList, setShowPasswordList] = useState(
-    new Array(users.length).fill(false)
-  );
 
   useEffect(() => {
     dispatch(fetchAllUsers());
   }, []);
-  const handleShowPassword = (index: number) => {
-    setShowPasswordList((prevShowPasswordList) => {
-      const updatedList = [...prevShowPasswordList];
-      updatedList[index] = !updatedList[index];
-      return updatedList;
-    });
+
+  const handleDeleteUser = (userId: string) => {
+    window.confirm("Are you sure you want to delete this user?") &&
+      dispatch(deleteUser(userId)); // Dispatch the deleteUser action
+    alert("User deleted successfully");
   };
 
   return (
@@ -49,12 +46,15 @@ const UserList = () => {
               <TableCell>User Email</TableCell>
               <TableCell>User Avatar</TableCell>
               <TableCell>User Role</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users.map((user, index) => (
               <TableRow key={user.id}>
-                <TableCell>{user.firstName}</TableCell>
+                <TableCell>
+                  <Link to={`/userlist/${user.id}`}>{user.firstName}</Link>
+                </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   <Avatar
@@ -65,6 +65,11 @@ const UserList = () => {
                   />
                 </TableCell>
                 <TableCell>{user.userRole}</TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleDeleteUser(user.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -16,6 +16,8 @@ import AddNewProduct from "../components/admin_components/AddNewProduct";
 import DeleteProduct from "../components/admin_components/DeleteProduct";
 import UpdateProduct from "../components/admin_components/UpdateProduct";
 import AdminProductDashboard from "../components/admin_components/AdminProductDashboard";
+import SingleUserPage from "../pages/SingleUserPage";
+import OrderList from "../pages/OrderList";
 
 const routes: any = createBrowserRouter([
   {
@@ -115,8 +117,8 @@ const routes: any = createBrowserRouter([
               </PrivateRoute>
             ),
           },
-       ],
-     },
+        ],
+      },
       {
         path: "/userlist",
         element: (
@@ -126,6 +128,30 @@ const routes: any = createBrowserRouter([
             fallbackPath="/login"
           >
             <UserList />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/userlist/:id",
+        element: (
+          <PrivateRoute
+            isAuthenticated={true}
+            isAdmin={true}
+            fallbackPath="/login"
+          >
+            <SingleUserPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/orderlist",
+        element: (
+          <PrivateRoute
+            isAuthenticated={true}
+            isAdmin={true}
+            fallbackPath="/login"
+          >
+            <OrderList />
           </PrivateRoute>
         ),
       },

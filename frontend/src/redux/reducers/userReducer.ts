@@ -88,9 +88,8 @@ export const authenticate = createAsyncThunk(
           },
         }
       );
-      console.log(authentication.data);
       const user: User = authentication.data;
-      user.isAdmin = user.userRole === "Admin"; // Corrected comparison
+      user.isAdmin = user.userRole === "Admin";
 
       return authentication.data;
     } catch (e) {
@@ -108,7 +107,6 @@ export const login = createAsyncThunk(
         "http://localhost:5292/api/v1/auth",
         { email, password }
       );
-      console.log("from login" + result.data);
       localStorage.setItem("token", result.data);
       const authentication = await dispatch(authenticate(result.data));
       return authentication.payload as User;

@@ -1,5 +1,13 @@
-import React from "react";
-import { Box, Modal, Typography, Button, IconButton } from "@mui/material";
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  Box,
+  Modal,
+  Typography,
+  Button,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -16,6 +24,9 @@ import {
 import { ModalProps } from "../types/ModalProps";
 import { CartItem } from "../types/CartItem";
 import { CartType } from "../types/CartType";
+import { fetchCreateOrder } from "../redux/reducers/orderReducer";
+import { User } from "../types/User";
+import { OrderDetail } from "../types/Order";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,23 +46,80 @@ const Cart = (props: ModalProps) => {
     (state) => state.cartReducer
   );
   const dispatch = useAppDispatch();
+  const [fullName, setFullName] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [isOrdering, setIsOrdering] = useState(false);
+  const isLoggedIn = localStorage.getItem("token") !== null;
+
   if (!isOpen) {
     return null;
   }
+
   const handleCloseModal = () => {
     dispatch(closeModal());
   };
+
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
   const handleDeleteCartItem = (cartId: string) => {
     dispatch(deleteCartItem(cartId));
   };
+
   const handleAddMoreOneItem = (cartId: string) => {
     dispatch(addMoreOneItem(cartId));
   };
+
   const handleDecreaseOneItem = (cartId: string) => {
     dispatch(decreaseOneItem(cartId));
+  };
+
+  const handleStartOrder = () => {
+    if (!isLoggedIn) {
+      alert("You need to be logged in to place an order.");
+      return;
+    }
+    setIsOrdering(true);
+  };
+
+  const handlePlaceOrder = async () => {
+    const orderDetails: OrderDetail[] = items.map((item: CartItem) => ({
+      productId: item.id,
+      quantity: item.total,
+    }));
+
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      const response = await axios.get<User>(
+        "http://localhost:5292/api/v1/users/profile",
+        {
+          headers: headers,
+        }
+      );
+      const user: User = response.data;
+
+      const order = {
+        fullName,
+        deliveryAddress,
+        orderDetails,
+        userId: user.id,
+      };
+
+      dispatch(fetchCreateOrder(order));
+      alert("Order placed successfully!");
+      setIsOrdering(false);
+      setFullName("");
+      setDeliveryAddress("");
+      dispatch(clearCart());
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
   };
 
   return (
@@ -66,7 +134,29 @@ const Cart = (props: ModalProps) => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Shopping cart
           </Typography>
-          {props.children}
+          {!isOrdering && (
+            <Button variant="contained" onClick={handleStartOrder}>
+              Order
+            </Button>
+          )}
+          {isOrdering && isLoggedIn && (
+            <>
+              <TextField
+                required
+                label="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                required
+                label="Delivery Address"
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                sx={{ mb: 2 }}
+              />
+            </>
+          )}
           {items.length === 0 ? (
             <Typography variant="body1">
               Your shopping cart is empty.
@@ -125,6 +215,11 @@ const Cart = (props: ModalProps) => {
               <Button variant="contained" onClick={handleClearCart}>
                 Clear
               </Button>
+              {isOrdering && isLoggedIn && (
+                <Button variant="contained" onClick={handlePlaceOrder}>
+                  Place Order
+                </Button>
+              )}
             </>
           )}
         </Box>

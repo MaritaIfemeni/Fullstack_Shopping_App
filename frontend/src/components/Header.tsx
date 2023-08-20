@@ -95,6 +95,14 @@ const Header = () => {
                 >
                   User List
                 </MenuItem>,
+                <MenuItem
+                  component={Link}
+                  to="/orderlist"
+                  key="orderlist"
+                  onClick={handleMenuClose}
+                >
+                  Orders List
+                </MenuItem>,
               ]}
               <MenuItem
                 component={Link}

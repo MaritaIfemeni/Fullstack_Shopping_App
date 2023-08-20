@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { Product } from "../types/Product";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-//import { addCartItem } from "../redux/reducers/cartReducer";
+import { addCartItem } from "../redux/reducers/cartReducer";
 
 const style = {
   position: "relative" as "relative",
@@ -50,11 +50,11 @@ const SingleProductPage = () => {
       JSON.parse(localStorage.getItem("currentProduct") || "{}")
     );
   }, []);
-//   const handleAddToCart = (product: Product | undefined) => {
-//     if (product) {
-//       dispatch(addCartItem(product));
-//     }
-//   };
+  const handleAddToCart = (product: Product | undefined) => {
+    if (product) {
+      dispatch(addCartItem(product));
+    }
+  };
 
   return (
     <Card sx={style}>
@@ -74,14 +74,14 @@ const SingleProductPage = () => {
             </Typography>
           </Box>
 
-          {/* <Box>
+          <Box>
             <Button
               variant="contained"
               onClick={() => handleAddToCart(currentProduct)}
             >
               Add to Cart
             </Button>
-          </Box> */}
+          </Box>
 
         </Box>
       </CardContent>
