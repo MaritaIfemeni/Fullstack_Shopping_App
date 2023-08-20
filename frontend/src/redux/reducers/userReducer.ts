@@ -81,7 +81,7 @@ export const authenticate = createAsyncThunk(
   async (access_token: string) => {
     try {
       const authentication = await axios.get<User>(
-        "http://localhost:5292/api/v1/users/profile",
+        "https://mi-eshop.azurewebsites.net/api/v1/users/profile",
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -104,7 +104,7 @@ export const login = createAsyncThunk(
   async ({ email, password }: UserCredential, { dispatch }) => {
     try {
       const result = await axios.post<string>(
-        "http://localhost:5292/api/v1/auth",
+        "https://mi-eshop.azurewebsites.net/api/v1/auth",
         { email, password }
       );
       localStorage.setItem("token", result.data);

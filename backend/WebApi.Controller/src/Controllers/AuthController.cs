@@ -27,29 +27,5 @@ namespace WebApi.Controller.src.Controllers
             var token = await _authService.VerifyCredentials(credentials);
             return Ok(token);
         }
-
-        // [HttpGet("profile")]
-        // public IActionResult GetUserProfile()
-        // {
-        //     // Get the user's ID from the authenticated user's identity
-        //     var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-
-        //     // Fetch the user's profile from the database using the user's ID
-        //     var userProfile = _authService.User.FirstOrDefault(u => u.Id == userId);
-
-        //     if (userProfile == null)
-        //     {
-        //         return NotFound("User profile not found.");
-        //     }
-
-        //     return Ok(new
-        //     {
-        //         Id = userProfile.Id,
-        //         Email = userProfile.Email,
-        //         Name = userProfile.Name,
-        //         Role = User.FindFirst(ClaimTypes.Role), // Get the user's role from claims
-        //         Avatar = userProfile.Avatar
-        //     });
-      // }
     }
 }

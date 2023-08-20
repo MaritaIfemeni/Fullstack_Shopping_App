@@ -4,7 +4,7 @@ import { NewProduct } from "../types/NewProduct";
 import { UpdatedProduct } from "../types/UpdatedProduct";
 import { Product } from "../types/Product";
 
-const API_BASE_URL = "http://localhost:5292/api/v1/products";
+const API_BASE_URL = "https://mi-eshop.azurewebsites.net/api/v1/products";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -40,14 +40,6 @@ export const fetchAllProductsApi = async ({ search, order, descending, pageNumbe
     url,
   });
 };
-
-// export const fetchAllProductsApi = async (pageNumber: number, pageSize: number, search?: string) => {
-//     const url = search ? `/?Search=${search}&PageNumber=${pageNumber}&PageSize=${pageSize}` : `/?PageNumber=${pageNumber}&PageSize=${pageSize}`;
-//     return makeApiCall<Product[]>({
-//       method: "GET",
-//       url,
-//     });
-//   };
 
 export const createNewProductApi = async (product: NewProduct) => {
   const token = localStorage.getItem("token");

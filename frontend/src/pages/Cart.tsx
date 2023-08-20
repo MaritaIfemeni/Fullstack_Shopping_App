@@ -96,7 +96,7 @@ const Cart = (props: ModalProps) => {
 
     try {
       const response = await axios.get<User>(
-        "http://localhost:5292/api/v1/users/profile",
+        "https://mi-eshop.azurewebsites.net/api/v1/users/profile",
         {
           headers: headers,
         }

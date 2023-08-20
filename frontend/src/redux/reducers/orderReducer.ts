@@ -4,12 +4,10 @@ import {
   isAction,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
-import { CartItem } from "../../types/CartItem";
 import { Order, OrderDetail } from "../../types/Order";
-import { clearCart } from "./cartReducer";
-import { User } from "../../types/User";
+
 
 const initialState: Order = {
   fullName: "",
@@ -27,7 +25,7 @@ export const fetchAllOrder = createAsyncThunk(
     };
     try {
       const response = await axios.get<Order>(
-        "http://localhost:5292/api/v1/orders",
+        "https://mi-eshop.azurewebsites.net/api/v1/orders",
         { headers: headers }
       );
       return response.data;
@@ -46,7 +44,7 @@ export const fetchCreateOrder = createAsyncThunk(
     };
     try {
       const response = await axios.post<Order>(
-        "http://localhost:5292/api/v1/orders",
+        "https://mi-eshop.azurewebsites.net/api/v1/orders",
         order,
         {
           headers: headers,

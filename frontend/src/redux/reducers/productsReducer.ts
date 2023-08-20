@@ -57,13 +57,6 @@ export const fetchAllProducts = createAsyncThunk(
   }
 );
 
-// export const fetchAllProducts = createAsyncThunk(
-//   "products/fetchAll",
-//   async ({ pageNumber, pageSize, search }: { pageNumber: number, pageSize: number, search?: string }) => {
-//     return await fetchAllProductsApi(pageNumber, pageSize, search);
-//   }
-// );
-
 export const createNewProduct = createAsyncThunk(
   "products/create",
   async (product: NewProduct) => {

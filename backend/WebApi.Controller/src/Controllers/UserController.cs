@@ -18,15 +18,6 @@ namespace WebApi.Controller.src.Controllers
             _userService = baseService;
         }
 
-        // [AllowAnonymous]
-        // [HttpPost]
-        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
-        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
-        // [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
-        // public override async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto dto)
-        // {
-        //     return CreatedAtAction(nameof(CreateOne), await _userService.CreateOne(dto));
-        // }
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
