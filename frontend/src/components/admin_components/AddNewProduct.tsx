@@ -13,7 +13,7 @@ const AddNewProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [productImages, setProductImages] = useState<{ link: string }[]>([]); // Updatet this line just
+  const [productImages, setProductImages] = useState<{ link: string }[]>([]);
   const { productResponse } = useAppSelector((state) => state.productsReducer);
 
 

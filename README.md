@@ -67,7 +67,7 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
 
 - General:
 
-  - Deployed application is extremely slow and crashes a lot (needs restarting many of the occations) probably due to the backend issues (ans Azure free tier)?
+  - Deployed application is extremely slow  (Azure free tier?)
   - Testing in the backend has been very little done and not at all in the frontend.
   - Refactoring the code and cleaning up the code (For example: MUI code is not seperated in a seperate file, but in the same file as the component, lots of unused codes etc.).
   - Optimizing the code and performance.
@@ -79,6 +79,7 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
   - When refresshing the page in the pages taht are restricted via private route, it will always redirect to login page even the user is already logged in as an admin.
 
 - Backend:
+  - Prober valitadion and error handling has not been done.
   - Updating API:s are not functioning properly : it will update all the fields even if the field is not updated. In the order update it doesn't update the order status, but the updated date is updated.
   - Performance and obtimization has not been thought about.
 

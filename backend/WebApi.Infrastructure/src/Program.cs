@@ -9,14 +9,42 @@ using WebApi.Domain.src.RepoInterfaces;
 using WebApi.Infrastructure.src.RepoImplimentations;
 using WebApi.Infrastructure.src.Database;
 using WebApi.Infrastructure.src.AuthorizationRequirement;
+using WebApi.Domain.src.Entities;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 // Add Automapper DI
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // Add db context
-builder.Services.AddDbContext<DatabaseContext>();
+//builder.Services.AddDbContext<DatabaseContext>();
+
+// testing
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+var npgsqlBuilder = new NpgsqlDataSourceBuilder(connectionString);
+npgsqlBuilder.MapEnum<UserRole>();
+npgsqlBuilder.MapEnum<OrderStatus>();
+await using var dataSource = npgsqlBuilder.Build();
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.AddInterceptors(new TimeStampInterceptor());
+    options.UseNpgsql(dataSource)
+           .UseSnakeCaseNamingConvention();
+
+});
 
 // Add service DI
 builder.Services
@@ -28,8 +56,10 @@ builder.Services
 .AddScoped<IOrderRepo, OrderRepo>()
 .AddScoped<IOrderService, OrderService>();
 
-// Add services to the container.
 
+
+
+// Add services to the container.
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -80,8 +110,10 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-// Enable CORS with the default policy (allow any origin, method, and header)
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+// Enable CORS with the default policy (allow any origin, method, and header, crendentials)
+//app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors();
 
 app.UseAuthentication();
 

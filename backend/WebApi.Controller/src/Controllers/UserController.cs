@@ -14,7 +14,6 @@ namespace WebApi.Controller.src.Controllers
         private readonly IUserService _userService;
         public UserController(IUserService baseService) : base(baseService)
         {
-
             _userService = baseService;
         }
 
