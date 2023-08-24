@@ -1,8 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WebApi.Domain.src.Entities
 {
     public class Product : BaseEntity
     {
-        public string ProductName { get; set; } = string.Empty;
+        [Required] 
+        public required string ProductName { get; set; }
+        [Required] 
         public float Price { get; set; }
         public int Stock { get; set; }
         public string Description { get; set; } = string.Empty;
