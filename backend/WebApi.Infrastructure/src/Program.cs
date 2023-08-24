@@ -13,7 +13,6 @@ using WebApi.Domain.src.Entities;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -27,10 +26,10 @@ builder.Services.AddCors(options =>
 // Add Automapper DI
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-// Add db context
+// Removed adding db context from the DatabaseContext.cs file due npgslp version 4 recomendations not to create new npgsqldatasourcebuilder within the scope
 //builder.Services.AddDbContext<DatabaseContext>();
 
-// testing
+// Moved from DatabaseContext.cs here due npgslp version 4 recomendations not to create new npgsqldatasourcebuilder within the scope
 var connectionString = builder.Configuration.GetConnectionString("Default");
 
 var npgsqlBuilder = new NpgsqlDataSourceBuilder(connectionString);
@@ -55,9 +54,6 @@ builder.Services
 .AddScoped<IProductService, ProductService>()
 .AddScoped<IOrderRepo, OrderRepo>()
 .AddScoped<IOrderService, OrderService>();
-
-
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -107,11 +103,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
 app.UseHttpsRedirection();
 
-
-// Enable CORS with the default policy (allow any origin, method, and header, crendentials)
+// Enable CORS with the default policy (allow any origin, method, and header, crendentials), this code has been reblace top of the file with other approach whily trying to fix the cors issues
 //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseCors();
 

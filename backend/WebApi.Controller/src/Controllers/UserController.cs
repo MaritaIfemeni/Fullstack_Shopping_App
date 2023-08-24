@@ -8,7 +8,6 @@ using WebApi.Domain.src.Shared;
 
 namespace WebApi.Controller.src.Controllers
 {
-
     public class UserController : CrudController<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
         private readonly IUserService _userService;
@@ -66,7 +65,6 @@ namespace WebApi.Controller.src.Controllers
         {
             return Ok(await _userService.UpdateOneById(id, update));
         }
-
 
         [Authorize]
         [HttpGet("profile")]

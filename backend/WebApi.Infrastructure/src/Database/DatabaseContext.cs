@@ -25,6 +25,7 @@ namespace WebApi.Infrastructure.src.Database
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Below code has been moved to the program.cs file due to the npgslp version 4 recomentations not to create new npgsqldatasourcebuilder within the scope
             // var builder = new NpgsqlDataSourceBuilder(_config.GetConnectionString("Default"));
             // builder.MapEnum<UserRole>();
             // builder.MapEnum<OrderStatus>();

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Domain.src.Shared;

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Business.src.Dtos;
 
