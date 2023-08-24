@@ -1,6 +1,6 @@
 # Fullstack Project - E-commerce platform
 
-![Emoji](https://img.shields.io/badge/STILL_IN_PROGRESS-YES-red)
+![Emoji](https://img.shields.io/badge/IN_PROGRESS-YES-red)
 ![Emoji](https://img.shields.io/badge/author-MI-blue)
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
@@ -41,16 +41,30 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
 
 ### Functionalities
 
-- Backend Api endpoint functionalities are listed here: **[here](https://mi-eshop.azurewebsites.net/swagger/index.html)**
+- Detais about API endpoints are listed here: **[here](https://mi-eshop.azurewebsites.net/swagger/index.html)**
 
-- Frontend:
+  - Functionalities restricted only for Admin:
+    - Create, update and delete products
+    - Create, update and delete users
+    - Create Admin user
+    - See all/by Id the users and orders
+  - Functionalities for logged in Users:
+    - Create orders
+    - See their own profile details
+  - Functionalities for unauthenticated user:
+    - See all/by Id the products
+    - Create new user
+    - Login
 
-  - User:
-    - Can create account and login. They can browse products, see their own profile details and place an order via cart.
+- Frontend functionalities:
+
+  - Unauthenticated user:
+    - Can browse products, see the details of each product and add them in the cart. Can create account and login.
+  - Logged in user:
+    -  Can login, browse products and see detais of each product, see their own profile details and place an order via cart.
   - Admin:
-    - Can login, see all the users and products. They can create, update and delete users and products. They can also see all the orders.
+    - Can login, see all the users, orders and products. They can create, update and delete products and users can be deleted as well.
     - Only admin can create admin user.
-    - To test admin functionalities use:
       - email: admin@mail.com
       - password: admin123
 
@@ -67,14 +81,14 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
 
 - General:
 
-  - Deployed application is extremely slow  (Azure free tier?)
+  - Deployed application is extremely slow (Azure free tier?)
   - Testing in the backend has been very little done and not at all in the frontend.
   - Refactoring the code and cleaning up the code (For example: MUI code is not seperated in a seperate file, but in the same file as the component, lots of unused codes etc.).
   - Optimizing the code and performance.
 
 - Frontend:
 
-  - Filters and search does not work properly together: when filtering is applied it wont keep the filtered order. Trying these many times also crashes the application.
+  - Filters and search does not work properly together: when filtering is applied it won't keep the filtered order. When product page is not the first one search does not work at all.
   - Not able to add actual image file when creating new user or product, only URL is possible to add. Not able to add severeal image urls for product.
   - When refresshing the page in the pages taht are restricted via private route, it will always redirect to login page even the user is already logged in as an admin.
 
