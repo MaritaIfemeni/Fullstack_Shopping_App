@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,15 +13,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import useAppDispatch from "../hooks/useAppDispatch";
-import useAppSelector from "../hooks/useAppSelector";
-import { createNewUser, setUserResponse } from "../redux/reducers/userReducer";
-import { User } from "../types/User";
+import { createNewUser } from "../redux/reducers/userReducer";
 import registrationSchema, {
   RegistrationFormData,
 } from "../validation/registrationSchema";
 
 const RegitsrationForm = () => {
-  const { userResponse } = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -68,7 +65,7 @@ const RegitsrationForm = () => {
                 fullWidth
                 id="username"
                 {...register("username")}
-                label="username"
+                label="Username"
                 name="username"
                 autoComplete="username"
                 error={!!errors.username}
@@ -81,7 +78,7 @@ const RegitsrationForm = () => {
                 fullWidth
                 id="firstName"
                 {...register("firstName")}
-                label="firstName"
+                label="First Name"
                 name="firstName"
                 autoComplete="firstName"
                 error={!!errors.firstName}
@@ -94,7 +91,7 @@ const RegitsrationForm = () => {
                 fullWidth
                 id="lastName"
                 {...register("lastName")}
-                label="lastName"
+                label="Last Name"
                 name="lastName"
                 autoComplete="lastName"
                 error={!!errors.lastName}

@@ -1,10 +1,4 @@
-import React from "react";
-import {
-  createAsyncThunk,
-  createSlice,
-  isAction,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 import {
@@ -19,7 +13,6 @@ import { UserReducer } from "../../types/UserReducer";
 import { NewUser } from "../../types/NewUser";
 import { UserCredential } from "../../types/UserCredentials";
 import { UpdateUser } from "../../types/UpdateUser";
-import { number } from "yup";
 
 const initialState: UserReducer = {
   users: [],
@@ -122,7 +115,6 @@ export const checkStoredToken = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       if (token) {
         const authentication = await dispatch(authenticate(token));
 

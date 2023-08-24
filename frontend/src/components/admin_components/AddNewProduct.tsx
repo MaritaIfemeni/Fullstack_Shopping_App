@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
-import useAppSelector from "../../hooks/useAppSelector";
 import {
-  createNewProduct,
-  setProductResponse,
+  createNewProduct
 } from "../../redux/reducers/productsReducer";
 
 const AddNewProduct = () => {
@@ -14,8 +12,6 @@ const AddNewProduct = () => {
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
   const [productImages, setProductImages] = useState<{ link: string }[]>([]);
-  const { productResponse } = useAppSelector((state) => state.productsReducer);
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,14 +22,11 @@ const AddNewProduct = () => {
 
       if (response.payload) {
         const product = response.payload;
-        console.log(product);
         alert("Product created successfully!");
       } else {
-        console.log(response);
         alert("Failed to create product");
       }
     } catch (error) {
-      console.log(error);
       alert("An error occurred while creating the product");
     }
   };

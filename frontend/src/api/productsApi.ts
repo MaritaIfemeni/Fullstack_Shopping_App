@@ -79,4 +79,12 @@ export const deleteProductApi = async (id: string) => {
   });
 };
 
+export const fetchProductByIdApi = async (id: string) => {
+  return makeApiCall<Product>({
+    method: "GET",
+    url: `/${id}`,
+  });
+};
+
+
 

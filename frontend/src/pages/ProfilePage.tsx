@@ -7,7 +7,6 @@ import { Button, CardActionArea, CardActions, Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 
 import useAppSelector from "../hooks/useAppSelector";
-import useAppDispatch from "../hooks/useAppDispatch";
 
 const style = {
   position: "relative" as "relative",
@@ -21,7 +20,6 @@ const style = {
 };
 
 const ProfilePage = () => {
-  const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.userReducer.currentUser);
 
   return (

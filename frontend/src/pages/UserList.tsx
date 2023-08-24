@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -11,7 +11,6 @@ import {
   TableCell,
   Avatar,
   IconButton,
-  TextField,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -25,7 +24,7 @@ const UserList = () => {
 
   useEffect(() => {
     dispatch(fetchAllUsers());
-  }, []);
+  }, [dispatch]);
 
   const handleDeleteUser = (userId: string) => {
     window.confirm("Are you sure you want to delete this user?") &&

@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import {
   Container,
-  InputBase,
   Select,
   MenuItem,
   Button,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  List,
-  ListItem,
-  IconButton,
   Typography,
   TextField,
-  Autocomplete,
   Card,
   CardMedia,
   Grid,
@@ -27,7 +15,6 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
 
 import {
@@ -44,8 +31,7 @@ const ProductPage = () => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce<string>(search, 1000);
-  const [page, setPage] = useState(1);
-  const [order, setOrder] = useState<string>("UpdatedAt");
+  const [order] = useState<string>("UpdatedAt");
   const [descending, setDescending] = useState<boolean>(true);
   const [priceFilter, setPriceFilter] = useState<number>(0);
   const products = useAppSelector((state) => state.productsReducer.products);
@@ -76,10 +62,6 @@ const ProductPage = () => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-  };
-
-  const handleOrderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setOrder(event.target.value);
   };
 
   const handleDescendingChange = (
@@ -146,7 +128,7 @@ const ProductPage = () => {
             <Card
               sx={{ height: "100%", display: "flex", flexDirection: "column" }}
             >
-               <CardMedia
+              <CardMedia
                 component="div"
                 sx={{
                   pt: "56.25%",
@@ -177,8 +159,11 @@ const ProductPage = () => {
       <Button onClick={handlePrevPage} disabled={currentPage === 1}>
         Go to Previous Page
       </Button>
-      <Button onClick={handleLoadMore} disabled={products.length < itemsPerPage}>
-      Load More
+      <Button
+        onClick={handleLoadMore}
+        disabled={products.length < itemsPerPage}
+      >
+        Load More
       </Button>
     </Container>
   );

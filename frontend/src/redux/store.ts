@@ -30,6 +30,6 @@ store.subscribe(() => {
   saveCartStateToLocalStorage(cartReducer);
 });
 
-export type GlobalState = ReturnType<typeof store.getState>; 
+export type GlobalState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export default store;
