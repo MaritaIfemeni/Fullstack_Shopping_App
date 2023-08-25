@@ -64,7 +64,7 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
     -  Can login, browse products and see detais of each product, see their own profile details and place an order via cart.
   - Admin:
     - Can login, see all the users, orders and products. They can create, update and delete products and users can be deleted as well.
-    - Only admin can create admin user.
+    - To test admin functionalities use the following credentials:
       - email: admin@mail.com
       - password: admin123
 
