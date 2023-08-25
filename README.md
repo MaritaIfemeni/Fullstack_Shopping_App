@@ -105,7 +105,7 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
 
   1.  Navigate to the frontend folder (cd frontend)
   2.  To install the project run: npm install
-  3.  Refer to package.json for scripts
+  3.  Refer to package.json for scripts and dependencies
   4.  To run application in development mode run: npm start
   5.  To run tests run: npm test
   6.  To build application for production: npm run build
@@ -115,6 +115,7 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
   2.  Prerequisites
       - .NET SDK V 7
       - Visual Studio, Visual Studio Code or somtehing like that
+      - Refer to each project's .csproj file for dependencies
       - PostreSQL Server or another supported database
   3.  Configure the connection string in the appsettings.json file:
       ```
