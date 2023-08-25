@@ -70,7 +70,6 @@ Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev
 
 #### Missing functionalities
 
-- Design for the order list page is not done and the mapping with unique key is not done.
 - Normal user is not able to update their own details, delete the account or see their own products.
 - No payment feature done.
 - Not all user alerts are applied, for example when product is updated, it does not give a notice if it was updated or not.
