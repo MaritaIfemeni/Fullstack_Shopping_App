@@ -33,11 +33,11 @@ The purpose of this project was to build a fullstack application using react on 
 - ERR, requirements Analysis and Architecture plan can be found from the project desing board from: **[here](https://miro.com/app/board/uXjVMxMsI9Y=/?share_link_id=849947316130)**
 - Detailed API endpoint documentation can be found from Swagger from this page: **[here](https://mi-eshop.azurewebsites.net/swagger/index.html)**
 - Database lives in ElephantSQL and the backend is deployed to Azure.
-- Frontend is deployed to cloudflare and can be found from: **[here](https://532962c3.frontend-1rn.pages.dev/)**
+- Frontend is deployed to cloudflare and can be found from: **[here](https://frontend-1rn.pages.dev/)**
 
 ### Deployment
 
-Checkout the project from here: **[here](https://532962c3.frontend-1rn.pages.dev/)**
+Checkout the project from here: **[here](https://frontend-1rn.pages.dev/)**
 
 ### Functionalities
 
