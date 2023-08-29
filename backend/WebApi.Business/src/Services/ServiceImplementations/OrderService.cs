@@ -3,6 +3,7 @@ using WebApi.Business.src.Services.ServiceInterfaces;
 using WebApi.Business.src.Dtos;
 using WebApi.Domain.src.RepoInterfaces;
 using WebApi.Domain.src.Entities;
+using System.Transactions;
 
 namespace WebApi.Business.src.Services.ServiceImplementations
 {
@@ -19,25 +20,42 @@ namespace WebApi.Business.src.Services.ServiceImplementations
 
         public override async Task<OrderReadDto> CreateOne(OrderCreateDto orderCreateDto)
         {
-            var order = _mapper.Map<Order>(orderCreateDto);
-            order.UserId = orderCreateDto.UserId;
-            order.OrderDetails = new List<OrderDetail>();
-            foreach (var orderDetail in orderCreateDto.OrderDetails)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var product = await _productRepo.GetOneById(orderDetail.ProductId);
-                if (product == null)
+                try
                 {
-                    throw new Exception($"Product with id {orderDetail.ProductId} does not exist");
+                    var order = _mapper.Map<Order>(orderCreateDto);
+                    order.UserId = orderCreateDto.UserId;
+                    order.OrderDetails = new List<OrderDetail>();
+
+                    foreach (var orderDetailDto in orderCreateDto.OrderDetails)
+                    {
+                        var product = await _productRepo.GetOneById(orderDetailDto.ProductId);
+                        if (product == null)
+                        {
+                            throw new Exception($"Product with id {orderDetailDto.ProductId} does not exist");
+                        }
+
+                        order.OrderDetails.Add(new OrderDetail
+                        {
+                            Product = product,
+                            Quantity = orderDetailDto.Quantity,
+                            ProductId = orderDetailDto.ProductId
+                        });
+                    }
+
+                    var createdOrder = await _orderRepo.CreateOne(order);
+
+                    scope.Complete(); // Commit the transaction
+                    return _mapper.Map<OrderReadDto>(createdOrder);
                 }
-                order.OrderDetails.Add(new OrderDetail
+                catch (Exception)
                 {
-                    Product = product,
-                    Quantity = orderDetail.Quantity,
-                    ProductId = orderDetail.ProductId
-                });
+                    scope.Dispose(); // Rollback the transaction
+                    throw;
+                }
             }
-            var createdOrder = await _orderRepo.CreateOne(order);
-            return _mapper.Map<OrderReadDto>(createdOrder);
         }
     }
 }
+

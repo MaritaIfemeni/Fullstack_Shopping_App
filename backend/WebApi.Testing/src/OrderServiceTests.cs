@@ -103,7 +103,7 @@ namespace WebApi.Business.Tests
             Assert.Equal(order.OrderDetails[1].Quantity, result.OrderDetails[1].Quantity);
         }
 
-    
+
         [Fact]
         public async Task CreateOne_InvalidProductId_ThrowsException()
         {
@@ -150,6 +150,65 @@ namespace WebApi.Business.Tests
             Assert.NotNull(exception);
             Assert.IsType<Exception>(exception);
             Assert.Equal("Product with id " + orderCreateDto.OrderDetails[1].ProductId + " does not exist", exception.Message);
+        }
+
+        [Fact]
+        public async Task CreateOrder_RollbackOnOrderDetailCreationFailure()
+        {
+            // Arrange
+            var orderCreateDto = new OrderCreateDto
+            {
+                UserId = Guid.NewGuid(),
+                OrderDetails = new List<OrderDetailCreateDto>
+        {
+            new OrderDetailCreateDto
+            {
+                ProductId = Guid.NewGuid(),
+                Quantity = 2
+            },
+            new OrderDetailCreateDto
+            {
+                ProductId = Guid.NewGuid(),
+                Quantity = 3
+            }
+        }
+            };
+
+            var product1 = new Product
+            {
+                Id = orderCreateDto.OrderDetails[0].ProductId,
+                ProductName = "Product 1",
+                Price = 10
+            };
+
+            var product2 = new Product
+            {
+                Id = orderCreateDto.OrderDetails[1].ProductId,
+                ProductName = "Product 2",
+                Price = 20
+            };
+
+            _productRepoMock.Setup(repo => repo.GetOneById(product1.Id)).ReturnsAsync(product1);
+            _productRepoMock.Setup(repo => repo.GetOneById(product2.Id)).ReturnsAsync(product2);
+
+            // Make the orderDetail creation to fail
+            _orderRepoMock.Setup(repo => repo.CreateOne(It.IsAny<Order>())).Callback<Order>(order =>
+            {
+                if (order.OrderDetails.Count == 2)
+                {
+                    throw new Exception("Failed to create OrderDetail object");
+                }
+            }).ReturnsAsync((Order)null);
+
+            // Act
+            var exception = await Record.ExceptionAsync(() => _orderService.CreateOne(orderCreateDto));
+
+            // Assert
+            Assert.NotNull(exception);
+            Assert.IsType<Exception>(exception);
+            Assert.Equal("Failed to create OrderDetail object", exception.Message);
+            _orderRepoMock.Verify(repo => repo.CreateOne(It.IsAny<Order>()), Times.Once);
+            _orderRepoMock.Verify(repo => repo.CreateOne(It.Is<Order>(o => o.Id == Guid.Empty)), Times.Once);
         }
     }
 }

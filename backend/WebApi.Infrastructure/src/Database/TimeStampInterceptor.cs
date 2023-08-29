@@ -15,6 +15,11 @@ namespace WebApi.Infrastructure.src.Database
                     entity.CreatedAt = DateTime.Now;
                     entity.UpdatedAt = DateTime.Now;
                 }
+                if (trackEntry.Entity is OrderDetail orderDetail)
+                {
+                    orderDetail.CreatedAt = DateTime.Now;
+                    orderDetail.UpdatedAt = DateTime.Now;
+                }
             }
 
             var updatedEntries = eventData.Context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
