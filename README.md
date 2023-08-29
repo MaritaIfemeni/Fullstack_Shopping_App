@@ -70,7 +70,7 @@ Checkout the project from here: **[here](https://frontend-1rn.pages.dev/)**
 
 #### Missing functionalities
 
-- Normal user is not able to update their own details, delete the account or see their own products.
+- Normal user is not able to update their own details, delete the account or see their own orders.
 - No payment feature done.
 - Not all user alerts are applied, for example when product is updated, it does not give a notice if it was updated or not.
 - Indications that app is loading when fetching data from API has not been done.
@@ -90,10 +90,11 @@ Checkout the project from here: **[here](https://frontend-1rn.pages.dev/)**
   - Filters and search does not work properly together: when filtering is applied it won't keep the filtered order. When product page is not the first one search does not work at all.
   - Not able to add actual image file when creating new user or product, only URL is possible to add. Not able to add severeal image urls for product.
   - When refresshing the page in the pages taht are restricted via private route, it will always redirect to login page even the user is already logged in as an admin.
+  - Fetching the users profile and order details are not working properly, it gives an error in the console, but the data is fetched.
 
 - Backend:
   - Prober valitadion and error handling has not been done.
-  - Updating API:s are not functioning properly : it will update all the fields even if the field is not updated. In the order update it doesn't update the order status, but the updated date is updated.
+  - Updating for users and products are not functioning properly: it will update all the fields even if the field is not updated or empty field sent.
   - Performance and obtimization has not been thought about.
 
 ### Getting started

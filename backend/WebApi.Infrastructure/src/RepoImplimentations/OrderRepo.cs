@@ -13,7 +13,6 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
         {
             _orders = dbContext.Orders;
             _context = dbContext;
-
         }
         public override async Task<Order> CreateOne(Order order)
         {
@@ -22,7 +21,7 @@ namespace WebApi.Infrastructure.src.RepoImplimentations
         }
         public override async Task<Order?> GetOneById(Guid id)
         {
-             return await _orders.Include(p => p.OrderDetails).FirstOrDefaultAsync(p => p.Id == id);
+            return await _orders.Include(p => p.OrderDetails).FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

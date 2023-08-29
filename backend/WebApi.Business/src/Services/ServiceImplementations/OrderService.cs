@@ -4,6 +4,7 @@ using WebApi.Business.src.Dtos;
 using WebApi.Domain.src.RepoInterfaces;
 using WebApi.Domain.src.Entities;
 using System.Transactions;
+using WebApi.Business.src.Shared;
 
 namespace WebApi.Business.src.Services.ServiceImplementations
 {
@@ -33,9 +34,8 @@ namespace WebApi.Business.src.Services.ServiceImplementations
                         var product = await _productRepo.GetOneById(orderDetailDto.ProductId);
                         if (product == null)
                         {
-                            throw new Exception($"Product with id {orderDetailDto.ProductId} does not exist");
+                            throw ServiceExeption.NotFoundExeption($"Product with id {orderDetailDto.ProductId} does not exist");
                         }
-
                         order.OrderDetails.Add(new OrderDetail
                         {
                             Product = product,
@@ -43,18 +43,31 @@ namespace WebApi.Business.src.Services.ServiceImplementations
                             ProductId = orderDetailDto.ProductId
                         });
                     }
-
                     var createdOrder = await _orderRepo.CreateOne(order);
-
-                    scope.Complete(); // Commit the transaction
+                    scope.Complete();
                     return _mapper.Map<OrderReadDto>(createdOrder);
                 }
                 catch (Exception)
                 {
-                    scope.Dispose(); // Rollback the transaction
+                    scope.Dispose();
                     throw;
                 }
             }
+        }
+
+        public override async Task<OrderReadDto> UpdateOneById(Guid id, OrderUpdateDto updated)
+        {
+            var existingOrder = await _orderRepo.GetOneById(id);
+            if (existingOrder == null)
+            {
+                throw ServiceExeption.NotFoundExeption($"Order with id {id} was not found");
+            }
+            if (updated.Status != null)
+            {
+                existingOrder.OrderStatus = updated.Status;
+            }
+            var updatedOrder = await _orderRepo.UpdateOneById(existingOrder);
+            return _mapper.Map<OrderReadDto>(updatedOrder);
         }
     }
 }
